@@ -1,26 +1,26 @@
 /**
- * Creates a function that samples calls at regular intervals and captures trailing calls.
- * - Drops calls that occur between sampling intervals
- * - Takes one call per sampling interval if available
- * - Captures the last call if no call was made during the interval
+ * 创建一个函数，该函数以规则时间间隔对调用进行采样并捕获尾随调用。
+ * - 丢弃在采样间隔之间发生的调用
+ * - 如果可用，则每个采样间隔取一个调用
+ * - 如果在间隔内没有调用，则捕获最后一次调用
  *
- * @param fn The function to sample
- * @param sampleInterval How often to sample calls (in ms)
- * @returns The sampled function
+ * @param fn 要采样的函数
+ * @param sampleInterval 采样调用的频率（毫秒）
+ * @returns 采样后的函数
  */
 export function createSampler<T extends (...args: any[]) => any>(fn: T, sampleInterval: number): T {
   let lastArgs: Parameters<T> | null = null;
   let lastTime = 0;
   let timeout: NodeJS.Timeout | null = null;
 
-  // Create a function with the same type as the input function
+  // 创建一个与输入函数具有相同类型的函数
   const sampled = function (this: any, ...args: Parameters<T>) {
     const now = Date.now();
     lastArgs = args;
 
-    // If we're within the sample interval, just store the args
+    // 如果在采样间隔内，仅存储参数
     if (now - lastTime < sampleInterval) {
-      // Set up trailing call if not already set
+      // 如果尚未设置尾随调用，则设置
       if (!timeout) {
         timeout = setTimeout(
           () => {
@@ -39,7 +39,7 @@ export function createSampler<T extends (...args: any[]) => any>(fn: T, sampleIn
       return;
     }
 
-    // If we're outside the interval, execute immediately
+    // 如果在间隔外，立即执行
     lastTime = now;
     fn.apply(this, args);
     lastArgs = null;

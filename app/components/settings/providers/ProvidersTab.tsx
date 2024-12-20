@@ -5,15 +5,15 @@ import { LOCAL_PROVIDERS, URL_CONFIGURABLE_PROVIDERS } from '~/lib/stores/settin
 import type { IProviderConfig } from '~/types/model';
 import { logStore } from '~/lib/stores/logs';
 
-// Import a default fallback icon
-import DefaultIcon from '/icons/Default.svg'; // Adjust the path as necessary
+// 导入默认后备图标
+import DefaultIcon from '/icons/Default.svg'; // 根据需要调整路径
 import { providerBaseUrlEnvKeys } from '~/utils/constants';
 
 export default function ProvidersTab() {
   const { providers, updateProviderSettings, isLocalModel } = useSettings();
   const [filteredProviders, setFilteredProviders] = useState<IProviderConfig[]>([]);
 
-  // Load base URLs from cookies
+  // 从 cookie 加载基本 URL
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -34,9 +34,9 @@ export default function ProvidersTab() {
 
     newFilteredProviders.sort((a, b) => a.name.localeCompare(b.name));
 
-    // Split providers into regular and URL-configurable
-    const regular = newFilteredProviders.filter(p => !URL_CONFIGURABLE_PROVIDERS.includes(p.name));
-    const urlConfigurable = newFilteredProviders.filter(p => URL_CONFIGURABLE_PROVIDERS.includes(p.name));
+    // 将提供者分为常规和 URL 可配置
+    const regular = newFilteredProviders.filter((p) => !URL_CONFIGURABLE_PROVIDERS.includes(p.name));
+    const urlConfigurable = newFilteredProviders.filter((p) => URL_CONFIGURABLE_PROVIDERS.includes(p.name));
 
     setFilteredProviders([...regular, ...urlConfigurable]);
   }, [providers, searchTerm, isLocalModel]);
@@ -70,9 +70,9 @@ export default function ProvidersTab() {
               updateProviderSettings(provider.name, { ...provider.settings, enabled });
 
               if (enabled) {
-                logStore.logProvider(`Provider ${provider.name} enabled`, { provider: provider.name });
+                logStore.logProvider(`提供者 ${provider.name} 启用`, { provider: provider.name });
               } else {
-                logStore.logProvider(`Provider ${provider.name} disabled`, { provider: provider.name });
+                logStore.logProvider(`提供者 ${provider.name} 禁用`, { provider: provider.name });
               }
             }}
           />
@@ -81,11 +81,11 @@ export default function ProvidersTab() {
           <div className="mt-2">
             {envBaseUrl && (
               <label className="block text-xs text-bolt-elements-textSecondary text-green-300 mb-2">
-                Set On (.env) : {envBaseUrl}
+                设置于 (.env) : {envBaseUrl}
               </label>
             )}
             <label className="block text-sm text-bolt-elements-textSecondary mb-2">
-              {envBaseUrl ? 'Override Base Url' : 'Base URL '}:{' '}
+              {envBaseUrl ? '覆盖基本 URL' : '基本 URL '}:{' '}
             </label>
             <input
               type="text"
@@ -98,12 +98,12 @@ export default function ProvidersTab() {
                 }
 
                 updateProviderSettings(provider.name, { ...provider.settings, baseUrl: newBaseUrl });
-                logStore.logProvider(`Base URL updated for ${provider.name}`, {
+                logStore.logProvider(`更新了 ${provider.name} 的基本 URL`, {
                   provider: provider.name,
                   baseUrl: newBaseUrl,
                 });
               }}
-              placeholder={`Enter ${provider.name} base URL`}
+              placeholder={`输入 ${provider.name} 的基本 URL`}
               className="w-full bg-white dark:bg-bolt-elements-background-depth-4 relative px-2 py-1.5 rounded-md focus:outline-none placeholder-bolt-elements-textTertiary text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary border border-bolt-elements-borderColor"
             />
           </div>
@@ -112,36 +112,32 @@ export default function ProvidersTab() {
     );
   };
 
-  const regularProviders = filteredProviders.filter(p => !URL_CONFIGURABLE_PROVIDERS.includes(p.name));
-  const urlConfigurableProviders = filteredProviders.filter(p => URL_CONFIGURABLE_PROVIDERS.includes(p.name));
+  const regularProviders = filteredProviders.filter((p) => !URL_CONFIGURABLE_PROVIDERS.includes(p.name));
+  const urlConfigurableProviders = filteredProviders.filter((p) => URL_CONFIGURABLE_PROVIDERS.includes(p.name));
 
   return (
     <div className="p-4">
       <div className="flex mb-4">
         <input
           type="text"
-          placeholder="Search providers..."
+          placeholder="搜索提供者..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full bg-white dark:bg-bolt-elements-background-depth-4 relative px-2 py-1.5 rounded-md focus:outline-none placeholder-bolt-elements-textTertiary text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary border border-bolt-elements-borderColor"
         />
       </div>
 
-      {/* Regular Providers Grid */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
-        {regularProviders.map(renderProviderCard)}
-      </div>
+      {/* 常规提供者网格 */}
+      <div className="grid grid-cols-2 gap-4 mb-8">{regularProviders.map(renderProviderCard)}</div>
 
-      {/* URL Configurable Providers Section */}
+      {/* 可配置 URL 的提供者部分 */}
       {urlConfigurableProviders.length > 0 && (
         <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-2 text-bolt-elements-textPrimary">Experimental Providers</h3>
+          <h3 className="text-lg font-semibold mb-2 text-bolt-elements-textPrimary">实验性提供者</h3>
           <p className="text-sm text-bolt-elements-textSecondary mb-4">
-            These providers are experimental and allow you to run AI models locally or connect to your own infrastructure. They require additional setup but offer more flexibility.
+            这些提供者是实验性的，允许您本地运行 AI 模型或连接到您自己的基础设施。它们需要额外的设置，但提供更多灵活性。
           </p>
-          <div className="space-y-4">
-            {urlConfigurableProviders.map(renderProviderCard)}
-          </div>
+          <div className="space-y-4">{urlConfigurableProviders.map(renderProviderCard)}</div>
         </div>
       )}
     </div>

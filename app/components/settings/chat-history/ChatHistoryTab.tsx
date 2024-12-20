@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { db, deleteById, getAll } from '~/lib/persistence';
 import { classNames } from '~/utils/classNames';
 import styles from '~/components/settings/Settings.module.scss';
-import { logStore } from '~/lib/stores/logs'; // Import logStore for event logging
+import { logStore } from '~/lib/stores/logs'; // 导入 logStore 以进行事件记录
 
 export default function ChatHistoryTab() {
   const navigate = useNavigate();
@@ -22,16 +22,16 @@ export default function ChatHistoryTab() {
   };
 
   const handleDeleteAllChats = async () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete all chats? This action cannot be undone.');
+    const confirmDelete = window.confirm('您确定要删除所有聊天记录吗？此操作无法撤销。');
 
     if (!confirmDelete) {
-      return; // Exit if the user cancels
+      return; // 如果用户取消，退出
     }
 
     if (!db) {
-      const error = new Error('Database is not available');
-      logStore.logError('Failed to delete chats - DB unavailable', error);
-      toast.error('Database is not available');
+      const error = new Error('数据库不可用');
+      logStore.logError('删除聊天记录失败 - 数据库不可用', error);
+      toast.error('数据库不可用');
 
       return;
     }
@@ -41,12 +41,12 @@ export default function ChatHistoryTab() {
 
       const allChats = await getAll(db);
       await Promise.all(allChats.map((chat) => deleteById(db!, chat.id)));
-      logStore.logSystem('All chats deleted successfully', { count: allChats.length });
-      toast.success('All chats deleted successfully');
+      logStore.logSystem('所有聊天记录成功删除', { count: allChats.length });
+      toast.success('所有聊天记录成功删除');
       navigate('/', { replace: true });
     } catch (error) {
-      logStore.logError('Failed to delete chats', error);
-      toast.error('Failed to delete chats');
+      logStore.logError('删除聊天记录失败', error);
+      toast.error('删除聊天记录失败');
       console.error(error);
     } finally {
       setIsDeleting(false);
@@ -55,9 +55,9 @@ export default function ChatHistoryTab() {
 
   const handleExportAllChats = async () => {
     if (!db) {
-      const error = new Error('Database is not available');
-      logStore.logError('Failed to export chats - DB unavailable', error);
-      toast.error('Database is not available');
+      const error = new Error('数据库不可用');
+      logStore.logError('导出聊天记录失败 - 数据库不可用', error);
+      toast.error('数据库不可用');
 
       return;
     }
@@ -70,11 +70,11 @@ export default function ChatHistoryTab() {
       };
 
       downloadAsJson(exportData, `all-chats-${new Date().toISOString()}.json`);
-      logStore.logSystem('Chats exported successfully', { count: allChats.length });
-      toast.success('Chats exported successfully');
+      logStore.logSystem('聊天记录成功导出', { count: allChats.length });
+      toast.success('聊天记录成功导出');
     } catch (error) {
-      logStore.logError('Failed to export chats', error);
-      toast.error('Failed to export chats');
+      logStore.logError('导出聊天记录失败', error);
+      toast.error('导出聊天记录失败');
       console.error(error);
     }
   };
@@ -82,7 +82,7 @@ export default function ChatHistoryTab() {
   return (
     <>
       <div className="p-4">
-        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Chat History</h3>
+        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">聊天记录</h3>
         <button
           onClick={handleExportAllChats}
           className={classNames(
@@ -92,14 +92,14 @@ export default function ChatHistoryTab() {
             'text-bolt-elements-button-primary-text',
           )}
         >
-          Export All Chats
+          导出所有聊天记录
         </button>
 
         <div
           className={classNames('text-bolt-elements-textPrimary rounded-lg py-4 mb-4', styles['settings-danger-area'])}
         >
-          <h4 className="font-semibold">Danger Area</h4>
-          <p className="mb-2">This action cannot be undone!</p>
+          <h4 className="font-semibold">危险区域</h4>
+          <p className="mb-2">此操作无法撤销！</p>
           <button
             onClick={handleDeleteAllChats}
             disabled={isDeleting}
@@ -110,7 +110,7 @@ export default function ChatHistoryTab() {
               'text-bolt-elements-button-danger-text',
             )}
           >
-            {isDeleting ? 'Deleting...' : 'Delete All Chats'}
+            {isDeleting ? '删除中...' : '删除所有聊天记录'}
           </button>
         </div>
       </div>

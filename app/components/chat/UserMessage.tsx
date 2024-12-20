@@ -1,6 +1,6 @@
 /*
  * @ts-nocheck
- * Preventing TS checks with files presented in the video for a better presentation.
+ * 通过呈现在视频中的文件来防止 TS 检查，以便更好地演示。
  */
 import { MODEL_REGEX, PROVIDER_REGEX } from '~/utils/constants';
 import { Markdown } from './Markdown';
@@ -23,7 +23,7 @@ export function UserMessage({ content }: UserMessageProps) {
             <img
               key={index}
               src={item.image}
-              alt={`Image ${index + 1}`}
+              alt={`图片 ${index + 1}`}
               className="max-w-full h-auto rounded-lg"
               style={{ maxHeight: '512px', objectFit: 'contain' }}
             />

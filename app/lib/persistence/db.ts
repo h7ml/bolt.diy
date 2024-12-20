@@ -4,10 +4,10 @@ import type { ChatHistoryItem } from './useChatHistory';
 
 const logger = createScopedLogger('ChatHistory');
 
-// this is used at the top level and never rejects
+// 这是在顶级使用的，并且永远不会拒绝
 export async function openDatabase(): Promise<IDBDatabase | undefined> {
   if (typeof indexedDB === 'undefined') {
-    console.error('indexedDB is not available in this environment.');
+    console.error('在此环境中无法使用indexedDB。');
     return undefined;
   }
 
@@ -59,7 +59,7 @@ export async function setMessages(
     const store = transaction.objectStore('chats');
 
     if (timestamp && isNaN(Date.parse(timestamp))) {
-      reject(new Error('Invalid timestamp'));
+      reject(new Error('无效的时间戳'));
       return;
     }
 
@@ -174,30 +174,30 @@ export async function forkChat(db: IDBDatabase, chatId: string, messageId: strin
   const chat = await getMessages(db, chatId);
 
   if (!chat) {
-    throw new Error('Chat not found');
+    throw new Error('未找到聊天记录');
   }
 
-  // Find the index of the message to fork at
+  // 找到要分叉的消息索引
   const messageIndex = chat.messages.findIndex((msg) => msg.id === messageId);
 
   if (messageIndex === -1) {
-    throw new Error('Message not found');
+    throw new Error('未找到消息');
   }
 
-  // Get messages up to and including the selected message
+  // 获取直到并包括所选消息的消息
   const messages = chat.messages.slice(0, messageIndex + 1);
 
-  return createChatFromMessages(db, chat.description ? `${chat.description} (fork)` : 'Forked chat', messages);
+  return createChatFromMessages(db, chat.description ? `${chat.description} (分叉)` : '分叉聊天', messages);
 }
 
 export async function duplicateChat(db: IDBDatabase, id: string): Promise<string> {
   const chat = await getMessages(db, id);
 
   if (!chat) {
-    throw new Error('Chat not found');
+    throw new Error('未找到聊天记录');
   }
 
-  return createChatFromMessages(db, `${chat.description || 'Chat'} (copy)`, chat.messages);
+  return createChatFromMessages(db, `${chat.description || '聊天'} (复制)`, chat.messages);
 }
 
 export async function createChatFromMessages(
@@ -206,28 +206,28 @@ export async function createChatFromMessages(
   messages: Message[],
 ): Promise<string> {
   const newId = await getNextId(db);
-  const newUrlId = await getUrlId(db, newId); // Get a new urlId for the duplicated chat
+  const newUrlId = await getUrlId(db, newId); // 获取复制聊天的新urlId
 
   await setMessages(
     db,
     newId,
     messages,
-    newUrlId, // Use the new urlId
+    newUrlId, // 使用新的urlId
     description,
   );
 
-  return newUrlId; // Return the urlId instead of id for navigation
+  return newUrlId; // 返回urlId而不是id以便导航
 }
 
 export async function updateChatDescription(db: IDBDatabase, id: string, description: string): Promise<void> {
   const chat = await getMessages(db, id);
 
   if (!chat) {
-    throw new Error('Chat not found');
+    throw new Error('未找到聊天记录');
   }
 
   if (!description.trim()) {
-    throw new Error('Description cannot be empty');
+    throw new Error('描述不能为空');
   }
 
   await setMessages(db, id, chat.messages, chat.urlId, description, chat.timestamp);

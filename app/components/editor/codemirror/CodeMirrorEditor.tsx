@@ -144,8 +144,8 @@ export const CodeMirrorEditor = memo(
     const onSaveRef = useRef(onSave);
 
     /**
-     * This effect is used to avoid side effects directly in the render function
-     * and instead the refs are updated after each render.
+     * 此效果用于避免在渲染函数中直接进行副作用
+     * 而是用于在每次渲染后更新 refs。
      */
     useEffect(() => {
       onScrollRef.current = onScroll;
@@ -228,7 +228,7 @@ export const CodeMirrorEditor = memo(
       }
 
       if (doc.filePath === '') {
-        logger.warn('File path should not be empty');
+        logger.warn('文件路径不应为空');
       }
 
       let state = editorStates.get(doc.filePath);
@@ -415,7 +415,7 @@ function setEditorDocument(
 
       if (autoFocus && editable) {
         if (needsScrolling) {
-          // we have to wait until the scroll position was changed before we can set the focus
+          // 在滚动位置更改之前，我们必须等待
           view.scrollDOM.addEventListener(
             'scroll',
             () => {
@@ -424,7 +424,7 @@ function setEditorDocument(
             { once: true },
           );
         } else {
-          // if the scroll position is still the same we can focus immediately
+          // 如果滚动位置仍然相同，我们可以立即聚焦
           view.focus();
         }
       }
@@ -452,7 +452,7 @@ function getReadOnlyTooltip(state: EditorState) {
         create: () => {
           const divElement = document.createElement('div');
           divElement.className = 'cm-readonly-tooltip';
-          divElement.textContent = 'Cannot edit file while AI response is being generated';
+          divElement.textContent = '在 AI 响应生成时无法编辑文件';
 
           return { dom: divElement };
         },

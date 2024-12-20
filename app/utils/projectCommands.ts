@@ -26,7 +26,7 @@ export async function detectProjectCommands(files: FileContent[]): Promise<Proje
       const packageJson = JSON.parse(packageJsonFile.content);
       const scripts = packageJson?.scripts || {};
 
-      // Check for preferred commands in priority order
+      // 按优先顺序检查首选命令
       const preferredCommands = ['dev', 'start', 'preview'];
       const availableCommand = preferredCommands.find((cmd) => scripts[cmd]);
 
@@ -34,18 +34,17 @@ export async function detectProjectCommands(files: FileContent[]): Promise<Proje
         return {
           type: 'Node.js',
           setupCommand: `npm install && npm run ${availableCommand}`,
-          followupMessage: `Found "${availableCommand}" script in package.json. Running "npm run ${availableCommand}" after installation.`,
+          followupMessage: `在 package.json 中找到 "${availableCommand}" 脚本。安装后将运行 "npm run ${availableCommand}"。`,
         };
       }
 
       return {
         type: 'Node.js',
         setupCommand: 'npm install',
-        followupMessage:
-          'Would you like me to inspect package.json to determine the available scripts for running this project?',
+        followupMessage: '您希望我检查 package.json 以确定运行此项目的可用脚本吗？',
       };
     } catch (error) {
-      console.error('Error parsing package.json:', error);
+      console.error('解析 package.json 时出错:', error);
       return { type: '', setupCommand: '', followupMessage: '' };
     }
   }
@@ -69,7 +68,7 @@ export function createCommandsMessage(commands: ProjectCommands): Message | null
   return {
     role: 'assistant',
     content: `
-<boltArtifact id="project-setup" title="Project Setup">
+<boltArtifact id="project-setup" title="项目设置">
 <boltAction type="shell">
 ${commands.setupCommand}
 </boltAction>

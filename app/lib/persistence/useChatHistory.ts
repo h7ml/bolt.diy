@@ -4,7 +4,7 @@ import { atom } from 'nanostores';
 import type { Message } from 'ai';
 import { toast } from 'react-toastify';
 import { workbenchStore } from '~/lib/stores/workbench';
-import { logStore } from '~/lib/stores/logs'; // Import logStore
+import { logStore } from '~/lib/stores/logs'; // 导入 logStore
 import {
   getMessages,
   getNextId,
@@ -44,9 +44,9 @@ export function useChatHistory() {
       setReady(true);
 
       if (persistenceEnabled) {
-        const error = new Error('Chat persistence is unavailable');
-        logStore.logError('Chat persistence initialization failed', error);
-        toast.error('Chat persistence is unavailable');
+        const error = new Error('聊天持久性不可用');
+        logStore.logError('聊天持久性初始化失败', error);
+        toast.error('聊天持久性不可用');
       }
 
       return;
@@ -72,7 +72,7 @@ export function useChatHistory() {
           setReady(true);
         })
         .catch((error) => {
-          logStore.logError('Failed to load chat messages', error);
+          logStore.logError('加载聊天消息失败', error);
           toast.error(error.message);
         });
     }
@@ -119,9 +119,9 @@ export function useChatHistory() {
       try {
         const newId = await duplicateChat(db, mixedId || listItemId);
         navigate(`/chat/${newId}`);
-        toast.success('Chat duplicated successfully');
+        toast.success('聊天复制成功');
       } catch (error) {
-        toast.error('Failed to duplicate chat');
+        toast.error('聊天复制失败');
         console.log(error);
       }
     },
@@ -133,12 +133,12 @@ export function useChatHistory() {
       try {
         const newId = await createChatFromMessages(db, description, messages);
         window.location.href = `/chat/${newId}`;
-        toast.success('Chat imported successfully');
+        toast.success('聊天导入成功');
       } catch (error) {
         if (error instanceof Error) {
-          toast.error('Failed to import chat: ' + error.message);
+          toast.error('聊天导入失败: ' + error.message);
         } else {
-          toast.error('Failed to import chat');
+          toast.error('聊天导入失败');
         }
       }
     },
@@ -169,7 +169,7 @@ export function useChatHistory() {
 
 function navigateChat(nextId: string) {
   /**
-   * FIXME: Using the intended navigate function causes a rerender for <Chat /> that breaks the app.
+   * FIXME: 使用预期的 navigate 函数会导致 <Chat /> 重新渲染，从而破坏应用。
    *
    * `navigate(`/chat/${nextId}`, { replace: true });`
    */

@@ -31,14 +31,14 @@ export const createChatFromFolder = async (
 
   const binaryFilesMessage =
     binaryFiles.length > 0
-      ? `\n\nSkipped ${binaryFiles.length} binary files:\n${binaryFiles.map((f) => `- ${f}`).join('\n')}`
+      ? `\n\n跳过了 ${binaryFiles.length} 个二进制文件:\n${binaryFiles.map((f) => `- ${f}`).join('\n')}`
       : '';
 
   const filesMessage: Message = {
     role: 'assistant',
-    content: `I've imported the contents of the "${folderName}" folder.${binaryFilesMessage}
+    content: `我已导入了 "${folderName}" 文件夹的内容。${binaryFilesMessage}
 
-<boltArtifact id="imported-files" title="Imported Files">
+<boltArtifact id="imported-files" title="已导入文件">
 ${fileArtifacts
   .map(
     (file) => `<boltAction type="file" filePath="${file.path}">
@@ -54,7 +54,7 @@ ${file.content}
   const userMessage: Message = {
     role: 'user',
     id: generateId(),
-    content: `Import the "${folderName}" folder`,
+    content: `导入 "${folderName}" 文件夹`,
     createdAt: new Date(),
   };
 

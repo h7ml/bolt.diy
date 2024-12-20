@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2018 Jed Watson.
- * Licensed under the MIT License (MIT), see:
+ * 版权所有 (c) 2018 Jed Watson.
+ * 按照 MIT 许可证 (MIT) 授权，见：
  *
  * @link http://jedwatson.github.io/classnames
  */
@@ -8,11 +8,10 @@
 type ClassNamesArg = undefined | string | Record<string, boolean> | ClassNamesArg[];
 
 /**
- * A simple JavaScript utility for conditionally joining classNames together.
+ * 一个简单的 JavaScript 工具，用于有条件地连接 classNames。
  *
- * @param args A series of classes or object with key that are class and values
- * that are interpreted as boolean to decide whether or not the class
- * should be included in the final class.
+ * @param args 一系列类名或带有类名作为键和解释为布尔值的对象，以决定
+ * 类是否应该包含在最终的类中。
  */
 export function classNames(...args: ClassNamesArg[]): string {
   let classes = '';

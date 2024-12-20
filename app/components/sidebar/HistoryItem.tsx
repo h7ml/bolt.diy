@@ -63,7 +63,7 @@ export function HistoryItem({ item, onDelete, onDuplicate, exportChat }: History
           >
             <div className="flex items-center p-1 text-bolt-elements-textSecondary opacity-0 group-hover:opacity-100 transition-opacity">
               <ChatActionButton
-                toolTipContent="Export chat"
+                toolTipContent="导出聊天"
                 icon="i-ph:download-simple"
                 onClick={(event) => {
                   event.preventDefault();
@@ -71,14 +71,10 @@ export function HistoryItem({ item, onDelete, onDuplicate, exportChat }: History
                 }}
               />
               {onDuplicate && (
-                <ChatActionButton
-                  toolTipContent="Duplicate chat"
-                  icon="i-ph:copy"
-                  onClick={() => onDuplicate?.(item.id)}
-                />
+                <ChatActionButton toolTipContent="复制聊天" icon="i-ph:copy" onClick={() => onDuplicate?.(item.id)} />
               )}
               <ChatActionButton
-                toolTipContent="Rename chat"
+                toolTipContent="重命名聊天"
                 icon="i-ph:pencil-fill"
                 onClick={(event) => {
                   event.preventDefault();
@@ -87,7 +83,7 @@ export function HistoryItem({ item, onDelete, onDuplicate, exportChat }: History
               />
               <Dialog.Trigger asChild>
                 <ChatActionButton
-                  toolTipContent="Delete chat"
+                  toolTipContent="删除聊天"
                   icon="i-ph:trash"
                   className="[&&]:hover:text-bolt-elements-button-danger-text"
                   onClick={(event) => {

@@ -76,17 +76,17 @@ export const FileTree = memo(
       for (const fileOrFolder of fileList) {
         const depth = fileOrFolder.depth;
 
-        // if the depth is equal we reached the end of the collaped group
+        // 如果深度相等，我们已经到达了折叠组的末尾
         if (lastDepth === depth) {
           lastDepth = Number.MAX_SAFE_INTEGER;
         }
 
-        // ignore collapsed folders
+        // 忽略折叠的文件夹
         if (collapsedFolders.has(fileOrFolder.fullPath)) {
           lastDepth = Math.min(lastDepth, depth);
         }
 
-        // ignore files and folders below the last collapsed folder
+        // 忽略在最后一个折叠文件夹下的文件和文件夹
         if (lastDepth < depth) {
           continue;
         }
@@ -218,8 +218,8 @@ function FileContextMenu({ onCopyPath, onCopyRelativePath, children }: FolderCon
           className="border border-bolt-elements-borderColor rounded-md z-context-menu bg-bolt-elements-background-depth-1 dark:bg-bolt-elements-background-depth-2 data-[state=open]:animate-in animate-duration-100 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-98 w-56"
         >
           <ContextMenu.Group className="p-1 border-b-px border-solid border-bolt-elements-borderColor">
-            <ContextMenuItem onSelect={onCopyPath}>Copy path</ContextMenuItem>
-            <ContextMenuItem onSelect={onCopyRelativePath}>Copy relative path</ContextMenuItem>
+            <ContextMenuItem onSelect={onCopyPath}>复制路径</ContextMenuItem>
+            <ContextMenuItem onSelect={onCopyRelativePath}>复制相对路径</ContextMenuItem>
           </ContextMenu.Group>
         </ContextMenu.Content>
       </ContextMenu.Portal>
@@ -411,17 +411,17 @@ function isHiddenFile(filePath: string, fileName: string, hiddenFiles: Array<str
 }
 
 /**
- * Sorts the given list of nodes into a tree structure (still a flat list).
+ * 将给定的节点列表排序为树形结构（仍然是平坦的列表）。
  *
- * This function organizes the nodes into a hierarchical structure based on their paths,
- * with folders appearing before files and all items sorted alphabetically within their level.
+ * 此函数根据路径将节点组织为层次结构，
+ * 文件夹在前，所有项在其级别内按字母顺序排列。
  *
- * @note This function mutates the given `nodeList` array for performance reasons.
+ * @note 此函数为了性能原因会改变给定的 `nodeList` 数组。
  *
- * @param rootFolder - The path of the root folder to start the sorting from.
- * @param nodeList - The list of nodes to be sorted.
+ * @param rootFolder - 用于开始排序的根文件夹的路径。
+ * @param nodeList - 要排序的节点列表。
  *
- * @returns A new array of nodes sorted in depth-first order.
+ * @returns 按深度优先顺序排序的新节点数组。
  */
 function sortFileList(rootFolder: string, nodeList: Node[], hideRoot: boolean): Node[] {
   logger.trace('sortFileList');
@@ -429,7 +429,7 @@ function sortFileList(rootFolder: string, nodeList: Node[], hideRoot: boolean): 
   const nodeMap = new Map<string, Node>();
   const childrenMap = new Map<string, Node[]>();
 
-  // pre-sort nodes by name and type
+  // 按名称和类型对节点进行预排序
   nodeList.sort((a, b) => compareNodes(a, b));
 
   for (const node of nodeList) {
@@ -469,7 +469,7 @@ function sortFileList(rootFolder: string, nodeList: Node[], hideRoot: boolean): 
   };
 
   if (hideRoot) {
-    // if root is hidden, start traversal from its immediate children
+    // 如果根被隐藏，从其直接子项开始遍历
     const rootChildren = childrenMap.get(rootFolder) || [];
 
     for (const child of rootChildren) {

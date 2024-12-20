@@ -68,7 +68,7 @@ export const Terminal = memo(
       useEffect(() => {
         const terminal = terminalRef.current!;
 
-        // we render a transparent cursor in case the terminal is readonly
+        // 如果终端是只读的，我们渲染一个透明光标
         terminal.options.theme = getTerminalTheme(readonly ? { cursor: '#00000000' } : {});
 
         terminal.options.disableStdin = readonly;

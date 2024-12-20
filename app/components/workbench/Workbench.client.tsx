@@ -29,11 +29,11 @@ const viewTransition = { ease: cubicEasingFn };
 const sliderOptions: SliderOptions<WorkbenchViewType> = {
   left: {
     value: 'code',
-    text: 'Code',
+    text: '代码',
   },
   right: {
     value: 'preview',
-    text: 'Preview',
+    text: '预览',
   },
 };
 
@@ -55,7 +55,7 @@ const workbenchVariants = {
 } satisfies Variants;
 
 export const Workbench = memo(({ chatStarted, isStreaming }: WorkspaceProps) => {
-  renderLogger.trace('Workbench');
+  renderLogger.trace('工作台');
 
   const [isSyncing, setIsSyncing] = useState(false);
 
@@ -97,7 +97,7 @@ export const Workbench = memo(({ chatStarted, isStreaming }: WorkspaceProps) => 
 
   const onFileSave = useCallback(() => {
     workbenchStore.saveCurrentDocument().catch(() => {
-      toast.error('Failed to update file content');
+      toast.error('更新文件内容失败');
     });
   }, []);
 
@@ -111,10 +111,10 @@ export const Workbench = memo(({ chatStarted, isStreaming }: WorkspaceProps) => 
     try {
       const directoryHandle = await window.showDirectoryPicker();
       await workbenchStore.syncFiles(directoryHandle);
-      toast.success('Files synced successfully');
+      toast.success('文件同步成功');
     } catch (error) {
-      console.error('Error syncing files:', error);
-      toast.error('Failed to sync files');
+      console.error('同步文件错误:', error);
+      toast.error('同步文件失败');
     } finally {
       setIsSyncing(false);
     }
@@ -153,11 +153,11 @@ export const Workbench = memo(({ chatStarted, isStreaming }: WorkspaceProps) => 
                       }}
                     >
                       <div className="i-ph:code" />
-                      Download Code
+                      下载代码
                     </PanelHeaderButton>
                     <PanelHeaderButton className="mr-1 text-sm" onClick={handleSyncFiles} disabled={isSyncing}>
                       {isSyncing ? <div className="i-ph:spinner" /> : <div className="i-ph:cloud-arrow-down" />}
-                      {isSyncing ? 'Syncing...' : 'Sync Files'}
+                      {isSyncing ? '同步中...' : '同步文件'}
                     </PanelHeaderButton>
                     <PanelHeaderButton
                       className="mr-1 text-sm"
@@ -166,18 +166,15 @@ export const Workbench = memo(({ chatStarted, isStreaming }: WorkspaceProps) => 
                       }}
                     >
                       <div className="i-ph:terminal" />
-                      Toggle Terminal
+                      切换终端
                     </PanelHeaderButton>
                     <PanelHeaderButton
                       className="mr-1 text-sm"
                       onClick={() => {
-                        const repoName = prompt(
-                          'Please enter a name for your new GitHub repository:',
-                          'bolt-generated-project',
-                        );
+                        const repoName = prompt('请输入新 GitHub 仓库的名称:', 'bolt-generated-project');
 
                         if (!repoName) {
-                          alert('Repository name is required. Push to GitHub cancelled.');
+                          alert('仓库名称是必需的。推送到 GitHub 被取消。');
                           return;
                         }
 
@@ -185,11 +182,11 @@ export const Workbench = memo(({ chatStarted, isStreaming }: WorkspaceProps) => 
                         const githubToken = Cookies.get('githubToken');
 
                         if (!githubUsername || !githubToken) {
-                          const usernameInput = prompt('Please enter your GitHub username:');
-                          const tokenInput = prompt('Please enter your GitHub personal access token:');
+                          const usernameInput = prompt('请输入你的 GitHub 用户名:');
+                          const tokenInput = prompt('请输入你的 GitHub 个人访问令牌:');
 
                           if (!usernameInput || !tokenInput) {
-                            alert('GitHub username and token are required. Push to GitHub cancelled.');
+                            alert('GitHub 用户名和令牌是必需的。推送到 GitHub 被取消。');
                             return;
                           }
 
@@ -200,7 +197,7 @@ export const Workbench = memo(({ chatStarted, isStreaming }: WorkspaceProps) => 
                       }}
                     >
                       <div className="i-ph:github-logo" />
-                      Push to GitHub
+                      推送到 GitHub
                     </PanelHeaderButton>
                   </div>
                 )}

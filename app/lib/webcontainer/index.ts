@@ -14,7 +14,7 @@ if (import.meta.hot) {
 }
 
 export let webcontainer: Promise<WebContainer> = new Promise(() => {
-  // noop for ssr
+  // 空操作，用于服务端渲染
 });
 
 if (!import.meta.env.SSR) {

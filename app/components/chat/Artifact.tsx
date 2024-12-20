@@ -82,7 +82,7 @@ export const Artifact = memo(({ messageId }: ArtifactProps) => {
           )}
           <div className="px-5 p-3.5 w-full text-left">
             <div className="w-full text-bolt-elements-textPrimary font-medium leading-5 text-sm">{artifact?.title}</div>
-            <div className="w-full w-full text-bolt-elements-textSecondary text-xs mt-0.5">Click to open Workbench</div>
+            <div className="w-full w-full text-bolt-elements-textSecondary text-xs mt-0.5">点击打开工作台</div>
           </div>
         </button>
         <div className="bg-bolt-elements-artifacts-borderColor w-[1px]" />
@@ -199,7 +199,7 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                 </div>
                 {type === 'file' ? (
                   <div>
-                    Create{' '}
+                    创建{' '}
                     <code
                       className="bg-bolt-elements-artifacts-inlineCode-background text-bolt-elements-artifacts-inlineCode-text px-1.5 py-1 rounded-md text-bolt-elements-item-contentAccent hover:underline cursor-pointer"
                       onClick={() => openArtifactInWorkbench(action.filePath)}
@@ -209,7 +209,7 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                   </div>
                 ) : type === 'shell' ? (
                   <div className="flex items-center w-full min-h-[28px]">
-                    <span className="flex-1">Run command</span>
+                    <span className="flex-1">运行命令</span>
                   </div>
                 ) : type === 'start' ? (
                   <a
@@ -219,7 +219,7 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                     }}
                     className="flex items-center w-full min-h-[28px]"
                   >
-                    <span className="flex-1">Start Application</span>
+                    <span className="flex-1">启动应用</span>
                   </a>
                 ) : null}
               </div>

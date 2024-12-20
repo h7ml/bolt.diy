@@ -13,14 +13,14 @@ export interface LogEntry {
   category: 'system' | 'provider' | 'user' | 'error';
 }
 
-const MAX_LOGS = 1000; // Maximum number of logs to keep in memory
+const MAX_LOGS = 1000; // 保留在内存中的最大日志数
 
 class LogStore {
   private _logs = map<Record<string, LogEntry>>({});
   showLogs = atom(true);
 
   constructor() {
-    // Load saved logs from cookies on initialization
+    // 在初始化时从 cookies 加载保存的日志
     this._loadLogs();
   }
 
@@ -32,7 +32,7 @@ class LogStore {
         const parsedLogs = JSON.parse(savedLogs);
         this._logs.set(parsedLogs);
       } catch (error) {
-        logger.error('Failed to parse logs from cookies:', error);
+        logger.error('无法从 cookies 解析日志:', error);
       }
     }
   }
@@ -81,22 +81,22 @@ class LogStore {
     return id;
   }
 
-  // System events
+  // 系统事件
   logSystem(message: string, details?: Record<string, any>) {
     return this.addLog(message, 'info', 'system', details);
   }
 
-  // Provider events
+  // 提供者事件
   logProvider(message: string, details?: Record<string, any>) {
     return this.addLog(message, 'info', 'provider', details);
   }
 
-  // User actions
+  // 用户行为
   logUserAction(message: string, details?: Record<string, any>) {
     return this.addLog(message, 'info', 'user', details);
   }
 
-  // Error events
+  // 错误事件
   logError(message: string, error?: Error | unknown, details?: Record<string, any>) {
     const errorDetails = {
       ...(details || {}),
@@ -111,12 +111,12 @@ class LogStore {
     return this.addLog(message, 'error', 'error', errorDetails);
   }
 
-  // Warning events
+  // 警告事件
   logWarning(message: string, details?: Record<string, any>) {
     return this.addLog(message, 'warning', 'system', details);
   }
 
-  // Debug events
+  // 调试事件
   logDebug(message: string, details?: Record<string, any>) {
     return this.addLog(message, 'debug', 'system', details);
   }

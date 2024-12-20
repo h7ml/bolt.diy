@@ -12,14 +12,14 @@ export async function action(args: ActionFunctionArgs) {
 function parseCookies(cookieHeader: string) {
   const cookies: any = {};
 
-  // Split the cookie string by semicolons and spaces
+  // 用分号和空格分割 cookie 字符串
   const items = cookieHeader.split(';').map((cookie) => cookie.trim());
 
   items.forEach((item) => {
     const [name, ...rest] = item.split('=');
 
     if (name && rest) {
-      // Decode the name and value, and join value parts in case it contains '='
+      // 解码名称和值，如果值部分包含 '=' 则连接起来
       const decodedName = decodeURIComponent(name.trim());
       const decodedValue = decodeURIComponent(rest.join('=').trim());
       cookies[decodedName] = decodedValue;
@@ -39,24 +39,24 @@ async function enhancerAction({ context, request }: ActionFunctionArgs) {
 
   const { name: providerName } = provider;
 
-  // validate 'model' and 'provider' fields
+  // 验证 'model' 和 'provider' 字段
   if (!model || typeof model !== 'string') {
-    throw new Response('Invalid or missing model', {
+    throw new Response('无效或缺失的模型', {
       status: 400,
-      statusText: 'Bad Request',
+      statusText: '错误请求',
     });
   }
 
   if (!providerName || typeof providerName !== 'string') {
-    throw new Response('Invalid or missing provider', {
+    throw new Response('无效或缺失的提供者', {
       status: 400,
-      statusText: 'Bad Request',
+      statusText: '错误请求',
     });
   }
 
   const cookieHeader = request.headers.get('Cookie');
 
-  // Parse the cookie's value (returns an object or null if no cookie exists)
+  // 解析 cookie 的值（返回一个对象，如果 cookie 不存在则返回 null）
   const apiKeys = JSON.parse(parseCookies(cookieHeader || '').apiKeys || '{}');
   const providerSettings: Record<string, IProviderSetting> = JSON.parse(
     parseCookies(cookieHeader || '').providers || '{}',
@@ -68,30 +68,30 @@ async function enhancerAction({ context, request }: ActionFunctionArgs) {
         {
           role: 'user',
           content:
-            `[Model: ${model}]\n\n[Provider: ${providerName}]\n\n` +
+            `[模型: ${model}]\n\n[提供者: ${providerName}]\n\n` +
             stripIndents`
-            You are a professional prompt engineer specializing in crafting precise, effective prompts.
-            Your task is to enhance prompts by making them more specific, actionable, and effective.
+            你是一名专业的提示工程师，专注于制定精确、有效的提示。
+            你的任务是通过使提示更加具体、可操作和有效来增强提示。
 
-            I want you to improve the user prompt that is wrapped in \`<original_prompt>\` tags.
+            我希望你改进被 \`<original_prompt>\` 标签包裹的用户提示。
 
-            For valid prompts:
-            - Make instructions explicit and unambiguous
-            - Add relevant context and constraints
-            - Remove redundant information
-            - Maintain the core intent
-            - Ensure the prompt is self-contained
-            - Use professional language
+            对于有效的提示：
+            - 使指示明确且毫不含糊
+            - 添加相关的上下文和限制
+            - 删除多余的信息
+            - 保持核心意图
+            - 确保提示是自给自足的
+            - 使用专业语言
 
-            For invalid or unclear prompts:
-            - Respond with clear, professional guidance
-            - Keep responses concise and actionable
-            - Maintain a helpful, constructive tone
-            - Focus on what the user should provide
-            - Use a standard template for consistency
+            对于无效或不清晰的提示：
+            - 以清晰、专业的指导进行回应
+            - 保持回应简洁且可操作
+            - 保持有帮助、建设性的语气
+            - 专注于用户应该提供什么
+            - 使用标准模板以保持一致性
 
-            IMPORTANT: Your response must ONLY contain the enhanced prompt text.
-            Do not include any explanations, metadata, or wrapper tags.
+            重要提示：你的回应必须只包含增强后的提示文本。
+            不要包含任何解释、元数据或包装标签。
 
             <original_prompt>
               ${message}
@@ -114,15 +114,15 @@ async function enhancerAction({ context, request }: ActionFunctionArgs) {
     console.log(error);
 
     if (error instanceof Error && error.message?.includes('API key')) {
-      throw new Response('Invalid or missing API key', {
+      throw new Response('无效或缺失的 API 密钥', {
         status: 401,
-        statusText: 'Unauthorized',
+        statusText: '未授权',
       });
     }
 
     throw new Response(null, {
       status: 500,
-      statusText: 'Internal Server Error',
+      statusText: '内部服务器错误',
     });
   }
 }

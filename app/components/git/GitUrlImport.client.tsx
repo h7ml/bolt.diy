@@ -56,7 +56,7 @@ export function GitUrlImport() {
 
         const textDecoder = new TextDecoder('utf-8');
 
-        // Convert files to common format for command detection
+        // 将文件转换为命令检测的常见格式
         const fileContents = filePaths
           .map((filePath) => {
             const { data: content, encoding } = data[filePath];
@@ -67,15 +67,15 @@ export function GitUrlImport() {
           })
           .filter((f) => f.content);
 
-        // Detect and create commands message
+        // 检测并创建命令消息
         const commands = await detectProjectCommands(fileContents);
         const commandsMessage = createCommandsMessage(commands);
 
-        // Create files message
+        // 创建文件消息
         const filesMessage: Message = {
           role: 'assistant',
-          content: `Cloning the repo ${repoUrl} into ${workdir}
-<boltArtifact id="imported-files" title="Git Cloned Files" type="bundled">           
+          content: `正在将仓库 ${repoUrl} 克隆到 ${workdir}
+<boltArtifact id="imported-files" title="Git 克隆的文件" type="bundled">           
 ${fileContents
   .map(
     (file) =>
@@ -95,7 +95,7 @@ ${file.content}
           messages.push(commandsMessage);
         }
 
-        await importChat(`Git Project:${repoUrl.split('/').slice(-1)[0]}`, messages);
+        await importChat(`Git 项目:${repoUrl.split('/').slice(-1)[0]}`, messages);
       }
     }
   };
@@ -113,8 +113,8 @@ ${file.content}
     }
 
     importRepo(url).catch((error) => {
-      console.error('Error importing repo:', error);
-      toast.error('Failed to import repository');
+      console.error('导入仓库时发生错误:', error);
+      toast.error('导入仓库失败');
       setLoading(false);
       window.location.href = '/';
     });
@@ -126,7 +126,7 @@ ${file.content}
       {() => (
         <>
           <Chat />
-          {loading && <LoadingOverlay message="Please wait while we clone the repository..." />}
+          {loading && <LoadingOverlay message="请等待，我们正在克隆仓库..." />}
         </>
       )}
     </ClientOnly>

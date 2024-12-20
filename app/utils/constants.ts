@@ -4,15 +4,15 @@ import type { ProviderInfo, IProviderSetting } from '~/types/model';
 import { createScopedLogger } from './logger';
 import { logStore } from '~/lib/stores/logs';
 
-export const WORK_DIR_NAME = 'project';
+export const WORK_DIR_NAME = '项目';
 export const WORK_DIR = `/home/${WORK_DIR_NAME}`;
 export const MODIFICATIONS_TAG_NAME = 'bolt_file_modifications';
-export const MODEL_REGEX = /^\[Model: (.*?)\]\n\n/;
-export const PROVIDER_REGEX = /\[Provider: (.*?)\]\n\n/;
+export const MODEL_REGEX = /^\[模型: (.*?)\]\n\n/;
+export const PROVIDER_REGEX = /\[提供者: (.*?)\]\n\n/;
 export const DEFAULT_MODEL = 'claude-3-5-sonnet-latest';
 export const PROMPT_COOKIE_KEY = 'cachedPrompt';
 
-const logger = createScopedLogger('Constants');
+const logger = createScopedLogger('常量');
 
 const PROVIDER_LIST: ProviderInfo[] = [
   {
@@ -20,19 +20,19 @@ const PROVIDER_LIST: ProviderInfo[] = [
     staticModels: [
       {
         name: 'claude-3-5-sonnet-latest',
-        label: 'Claude 3.5 Sonnet (new)',
+        label: 'Claude 3.5 Sonnet (新)',
         provider: 'Anthropic',
         maxTokenAllowed: 8000,
       },
       {
         name: 'claude-3-5-sonnet-20240620',
-        label: 'Claude 3.5 Sonnet (old)',
+        label: 'Claude 3.5 Sonnet (旧)',
         provider: 'Anthropic',
         maxTokenAllowed: 8000,
       },
       {
         name: 'claude-3-5-haiku-latest',
-        label: 'Claude 3.5 Haiku (new)',
+        label: 'Claude 3.5 Haiku (新)',
         provider: 'Anthropic',
         maxTokenAllowed: 8000,
       },
@@ -47,7 +47,7 @@ const PROVIDER_LIST: ProviderInfo[] = [
     staticModels: [],
     getDynamicModels: getOllamaModels,
     getApiKeyLink: 'https://ollama.com/download',
-    labelForGetApiKey: 'Download Ollama',
+    labelForGetApiKey: '下载 Ollama',
     icon: 'i-ph:cloud-arrow-down',
   },
   {
@@ -58,8 +58,8 @@ const PROVIDER_LIST: ProviderInfo[] = [
   {
     name: 'Cohere',
     staticModels: [
-      { name: 'command-r-plus-08-2024', label: 'Command R plus Latest', provider: 'Cohere', maxTokenAllowed: 4096 },
-      { name: 'command-r-08-2024', label: 'Command R Latest', provider: 'Cohere', maxTokenAllowed: 4096 },
+      { name: 'command-r-plus-08-2024', label: 'Command R plus 最新版', provider: 'Cohere', maxTokenAllowed: 4096 },
+      { name: 'command-r-08-2024', label: 'Command R 最新版', provider: 'Cohere', maxTokenAllowed: 4096 },
       { name: 'command-r-plus', label: 'Command R plus', provider: 'Cohere', maxTokenAllowed: 4096 },
       { name: 'command-r', label: 'Command R', provider: 'Cohere', maxTokenAllowed: 4096 },
       { name: 'command', label: 'Command', provider: 'Cohere', maxTokenAllowed: 4096 },
@@ -255,9 +255,9 @@ const PROVIDER_LIST: ProviderInfo[] = [
       { name: 'open-codestral-mamba', label: 'Codestral Mamba', provider: 'Mistral', maxTokenAllowed: 8000 },
       { name: 'open-mistral-nemo', label: 'Mistral Nemo', provider: 'Mistral', maxTokenAllowed: 8000 },
       { name: 'ministral-8b-latest', label: 'Mistral 8B', provider: 'Mistral', maxTokenAllowed: 8000 },
-      { name: 'mistral-small-latest', label: 'Mistral Small', provider: 'Mistral', maxTokenAllowed: 8000 },
+      { name: 'mistral-small-latest', label: 'Mistral 小型', provider: 'Mistral', maxTokenAllowed: 8000 },
       { name: 'codestral-latest', label: 'Codestral', provider: 'Mistral', maxTokenAllowed: 8000 },
-      { name: 'mistral-large-latest', label: 'Mistral Large Latest', provider: 'Mistral', maxTokenAllowed: 8000 },
+      { name: 'mistral-large-latest', label: 'Mistral 大型 最新版', provider: 'Mistral', maxTokenAllowed: 8000 },
     ],
     getApiKeyLink: 'https://console.mistral.ai/api-keys/',
   },
@@ -266,7 +266,7 @@ const PROVIDER_LIST: ProviderInfo[] = [
     staticModels: [],
     getDynamicModels: getLMStudioModels,
     getApiKeyLink: 'https://lmstudio.ai/',
-    labelForGetApiKey: 'Get LMStudio',
+    labelForGetApiKey: '获取 LMStudio',
     icon: 'i-ph:cloud-arrow-down',
   },
   {
@@ -288,7 +288,7 @@ const PROVIDER_LIST: ProviderInfo[] = [
 
       {
         name: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
-        label: 'Mixtral 8x7B Instruct',
+        label: 'Mixtral 8x7B 指令',
         provider: 'Together',
         maxTokenAllowed: 8192,
       },
@@ -300,19 +300,19 @@ const PROVIDER_LIST: ProviderInfo[] = [
     staticModels: [
       {
         name: 'llama-3.1-sonar-small-128k-online',
-        label: 'Sonar Small Online',
+        label: 'Sonar 小型 在线',
         provider: 'Perplexity',
         maxTokenAllowed: 8192,
       },
       {
         name: 'llama-3.1-sonar-large-128k-online',
-        label: 'Sonar Large Online',
+        label: 'Sonar 大型 在线',
         provider: 'Perplexity',
         maxTokenAllowed: 8192,
       },
       {
         name: 'llama-3.1-sonar-huge-128k-online',
-        label: 'Sonar Huge Online',
+        label: 'Sonar 巨型 在线',
         provider: 'Perplexity',
         maxTokenAllowed: 8192,
       },
@@ -459,14 +459,14 @@ async function getTogetherModels(
 
     return data.map((m: any) => ({
       name: m.id,
-      label: `${m.display_name} - in:$${m.pricing.input.toFixed(
+      label: `${m.display_name} - 输入:$${m.pricing.input.toFixed(
         2,
-      )} out:$${m.pricing.output.toFixed(2)} - context ${Math.floor(m.context_length / 1000)}k`,
+      )} 输出:$${m.pricing.output.toFixed(2)} - 上下文 ${Math.floor(m.context_length / 1000)}k`,
       provider: name,
       maxTokenAllowed: 8000,
     }));
   } catch (e) {
-    console.error('Error getting OpenAILike models:', e);
+    console.error('获取 OpenAILike 模型时出错:', e);
     return [];
   }
 }
@@ -480,13 +480,13 @@ const getOllamaBaseUrl = (name: string, settings?: IProviderSetting, serverEnv: 
     defaultApiTokenKey: '',
   });
 
-  // Check if we're in the browser
+  // 检查我们是否在浏览器中
   if (typeof window !== 'undefined') {
-    // Frontend always uses localhost
+    // 前端始终使用 localhost
     return baseUrl;
   }
 
-  // Backend: Check if we're running in Docker
+  // 后端：检查我们是否在 Docker 中运行
   const isDocker = process.env.RUNNING_IN_DOCKER === 'true';
 
   return isDocker ? baseUrl.replace('localhost', 'host.docker.internal') : baseUrl;
@@ -515,8 +515,8 @@ async function getOllamaModels(
       maxTokenAllowed: 8000,
     }));
   } catch (e: any) {
-    logStore.logError('Failed to get Ollama models', e, { baseUrl: settings?.baseUrl });
-    logger.warn('Failed to get Ollama models: ', e.message || '');
+    logStore.logError('获取 Ollama 模型失败', e, { baseUrl: settings?.baseUrl });
+    logger.warn('获取 Ollama 模型失败: ', e.message || '');
 
     return [];
   }
@@ -555,7 +555,7 @@ async function getOpenAILikeModels(
       provider: name,
     }));
   } catch (e) {
-    console.error('Error getting OpenAILike models:', e);
+    console.error('获取 OpenAILike 模型时出错:', e);
     return [];
   }
 }
@@ -585,9 +585,9 @@ async function getOpenRouterModels(): Promise<ModelInfo[]> {
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((m) => ({
       name: m.id,
-      label: `${m.name} - in:$${(m.pricing.prompt * 1_000_000).toFixed(
+      label: `${m.name} - 输入:$${(m.pricing.prompt * 1_000_000).toFixed(
         2,
-      )} out:$${(m.pricing.completion * 1_000_000).toFixed(2)} - context ${Math.floor(m.context_length / 1000)}k`,
+      )} 输出:$${(m.pricing.completion * 1_000_000).toFixed(2)} - 上下文 ${Math.floor(m.context_length / 1000)}k`,
       provider: 'OpenRouter',
       maxTokenAllowed: 8000,
     }));
@@ -622,7 +622,7 @@ async function getLMStudioModels(
       provider: 'LMStudio',
     }));
   } catch (e: any) {
-    logStore.logError('Failed to get LMStudio models', e, { baseUrl: settings?.baseUrl });
+    logStore.logError('获取 LMStudio 模型失败', e, { baseUrl: settings?.baseUrl });
     return [];
   }
 }
@@ -647,8 +647,8 @@ async function initializeModelList(options: {
         }
       }
     } catch (error: any) {
-      logStore.logError('Failed to fetch API keys from cookies', error);
-      logger.warn(`Failed to fetch apikeys from cookies: ${error?.message}`);
+      logStore.logError('无法从 Cookies 获取 API 密钥', error);
+      logger.warn(`无法从 Cookies 获取 API 密钥: ${error?.message}`);
     }
   }
 

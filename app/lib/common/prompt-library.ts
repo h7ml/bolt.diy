@@ -17,13 +17,13 @@ export class PromptLibrary {
     }
   > = {
     default: {
-      label: 'Default Prompt',
-      description: 'This is the battle tested default system Prompt',
+      label: '默认提示',
+      description: '这是经过严峻考验的默认系统提示',
       get: (options) => getSystemPrompt(options.cwd),
     },
     optimized: {
-      label: 'Optimized Prompt (experimental)',
-      description: 'an Experimental version of the prompt for lower token usage',
+      label: '优化提示（实验性）',
+      description: '为降低标记使用而设计的实验版本提示',
       get: (options) => optimized(options),
     },
   };
@@ -41,7 +41,7 @@ export class PromptLibrary {
     const prompt = this.library[promptId];
 
     if (!prompt) {
-      throw 'Prompt Now Found';
+      throw '未找到提示';
     }
 
     return this.library[promptId]?.get(options);

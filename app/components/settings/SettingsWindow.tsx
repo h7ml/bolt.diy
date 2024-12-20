@@ -25,15 +25,15 @@ export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
   const [activeTab, setActiveTab] = useState<TabType>('chat-history');
 
   const tabs: { id: TabType; label: string; icon: string; component?: ReactElement }[] = [
-    { id: 'chat-history', label: 'Chat History', icon: 'i-ph:book', component: <ChatHistoryTab /> },
-    { id: 'providers', label: 'Providers', icon: 'i-ph:key', component: <ProvidersTab /> },
-    { id: 'connection', label: 'Connection', icon: 'i-ph:link', component: <ConnectionsTab /> },
-    { id: 'features', label: 'Features', icon: 'i-ph:star', component: <FeaturesTab /> },
+    { id: 'chat-history', label: '聊天记录', icon: 'i-ph:book', component: <ChatHistoryTab /> },
+    { id: 'providers', label: '提供者', icon: 'i-ph:key', component: <ProvidersTab /> },
+    { id: 'connection', label: '连接', icon: 'i-ph:link', component: <ConnectionsTab /> },
+    { id: 'features', label: '功能', icon: 'i-ph:star', component: <FeaturesTab /> },
     ...(debug
       ? [
           {
             id: 'debug' as TabType,
-            label: 'Debug Tab',
+            label: '调试选项卡',
             icon: 'i-ph:bug',
             component: <DebugTab />,
           },
@@ -43,7 +43,7 @@ export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
       ? [
           {
             id: 'event-logs' as TabType,
-            label: 'Event Logs',
+            label: '事件日志',
             icon: 'i-ph:list-bullets',
             component: <EventLogsTab />,
           },
@@ -79,7 +79,7 @@ export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
                 )}
               >
                 <DialogTitle className="flex-shrink-0 text-lg font-semibold text-bolt-elements-textPrimary mb-2">
-                  Settings
+                  设置
                 </DialogTitle>
                 {tabs.map((tab) => (
                   <button
@@ -108,7 +108,7 @@ export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
                     className={classNames(styles['settings-button'], 'flex items-center gap-2')}
                   >
                     <div className="i-ph:book" />
-                    Docs
+                    文档
                   </a>
                 </div>
               </div>

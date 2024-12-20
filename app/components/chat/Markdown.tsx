@@ -26,7 +26,7 @@ export const Markdown = memo(({ children, html = false, limitedMarkdown = false 
           const messageId = node?.properties.dataMessageId as string;
 
           if (!messageId) {
-            logger.error(`Invalid message id ${messageId}`);
+            logger.error(`Invalid message ID ${messageId}`);
           }
 
           return <Artifact messageId={messageId} />;
@@ -74,23 +74,23 @@ export const Markdown = memo(({ children, html = false, limitedMarkdown = false 
 });
 
 /**
- * Removes code fence markers (```) surrounding an artifact element while preserving the artifact content.
- * This is necessary because artifacts should not be wrapped in code blocks when rendered for rendering action list.
+ * 移除围绕工件元素的代码围栏标记 (```) 同时保留工件内容。
+ * 这是必要的，因为在呈现操作列表时，工件不应被包裹在代码块中。
  *
- * @param content - The markdown content to process
- * @returns The processed content with code fence markers removed around artifacts
+ * @param content - 要处理的 markdown 内容
+ * @returns 移除围绕工件的代码围栏标记后的处理内容
  *
  * @example
- * // Removes code fences around artifact
+ * // 移除围绕工件的代码围栏
  * const input = "```xml\n<div class='__boltArtifact__'></div>\n```";
  * stripCodeFenceFromArtifact(input);
- * // Returns: "\n<div class='__boltArtifact__'></div>\n"
+ * // 返回: "\n<div class='__boltArtifact__'></div>\n"
  *
  * @remarks
- * - Only removes code fences that directly wrap an artifact (marked with __boltArtifact__ class)
- * - Handles code fences with optional language specifications (e.g. ```xml, ```typescript)
- * - Preserves original content if no artifact is found
- * - Safely handles edge cases like empty input or artifacts at start/end of content
+ * - 只移除直接包裹工件的代码围栏 (标记为 __boltArtifact__ 类)
+ * - 处理带有可选语言规范的代码围栏 (例如 ```xml, ```typescript)
+ * - 如果未找到工件，则保留原始内容
+ * - 安全处理诸如空输入或工件在内容开头/结尾的边缘情况
  */
 export const stripCodeFenceFromArtifact = (content: string) => {
   if (!content || !content.includes('__boltArtifact__')) {
@@ -100,12 +100,12 @@ export const stripCodeFenceFromArtifact = (content: string) => {
   const lines = content.split('\n');
   const artifactLineIndex = lines.findIndex((line) => line.includes('__boltArtifact__'));
 
-  // Return original content if artifact line not found
+  // 如果未找到工件行，则返回原始内容
   if (artifactLineIndex === -1) {
     return content;
   }
 
-  // Check previous line for code fence
+  // 检查上一行是否为代码围栏
   if (artifactLineIndex > 0 && lines[artifactLineIndex - 1]?.trim().match(/^```\w*$/)) {
     lines[artifactLineIndex - 1] = '';
   }

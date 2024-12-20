@@ -14,7 +14,7 @@ export function ChatDescription() {
     });
 
   if (!initialDescription) {
-    // doing this to prevent showing edit button until chat description is set
+    // 这样做是为了防止在聊天描述未设置时显示编辑按钮
     return null;
   }
 
@@ -33,7 +33,7 @@ export function ChatDescription() {
             style={{ width: `${Math.max(currentDescription.length * 8, 100)}px` }}
           />
           <TooltipProvider>
-            <WithTooltip tooltip="Save title">
+            <WithTooltip tooltip="保存标题">
               <div className="flex justify-between items-center p-2 rounded-md bg-bolt-elements-item-backgroundAccent">
                 <button
                   type="submit"
@@ -48,7 +48,7 @@ export function ChatDescription() {
         <>
           {currentDescription}
           <TooltipProvider>
-            <WithTooltip tooltip="Rename chat">
+            <WithTooltip tooltip="重命名聊天">
               <div className="flex justify-between items-center p-2 rounded-md bg-bolt-elements-item-backgroundAccent ml-2">
                 <button
                   type="button"

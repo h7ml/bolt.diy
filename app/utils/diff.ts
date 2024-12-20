@@ -29,17 +29,17 @@ export function computeFileModifications(files: FileMap, modifiedFiles: Map<stri
     const unifiedDiff = diffFiles(filePath, originalContent, file.content);
 
     if (!unifiedDiff) {
-      // files are identical
+      // 文件是相同的
       continue;
     }
 
     hasModifiedFiles = true;
 
     if (unifiedDiff.length > file.content.length) {
-      // if there are lots of changes we simply grab the current file content since it's smaller than the diff
+      // 如果有很多更改，我们简单地获取当前文件内容，因为它比差异小
       modifications[filePath] = { type: 'file', content: file.content };
     } else {
-      // otherwise we use the diff since it's smaller
+      // 否则我们使用差异，因为它更小
       modifications[filePath] = { type: 'diff', content: unifiedDiff };
     }
   }
@@ -52,9 +52,9 @@ export function computeFileModifications(files: FileMap, modifiedFiles: Map<stri
 }
 
 /**
- * Computes a diff in the unified format. The only difference is that the header is omitted
- * because it will always assume that you're comparing two versions of the same file and
- * it allows us to avoid the extra characters we send back to the llm.
+ * 计算统一格式的差异。唯一的区别是省略了头部，
+ * 因为它将始终假设您在比较同一文件的两个版本，
+ * 这使我们能够避免发送回给llm的额外字符。
  *
  * @see https://www.gnu.org/software/diffutils/manual/html_node/Unified-Format.html
  */
@@ -78,16 +78,16 @@ export function diffFiles(fileName: string, oldFileContent: string, newFileConte
 const regex = new RegExp(`^${WORK_DIR}\/`);
 
 /**
- * Strips out the work directory from the file path.
+ * 从文件路径中去除工作目录。
  */
 export function extractRelativePath(filePath: string) {
   return filePath.replace(regex, '');
 }
 
 /**
- * Converts the unified diff to HTML.
+ * 将统一差异转换为HTML。
  *
- * Example:
+ * 示例：
  *
  * ```html
  * <bolt_file_modifications>

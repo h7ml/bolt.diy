@@ -23,11 +23,11 @@ export const Preview = memo(() => {
   const [iframeUrl, setIframeUrl] = useState<string | undefined>();
   const [isSelectionMode, setIsSelectionMode] = useState(false);
 
-  // Toggle between responsive mode and device mode
+  // 切换响应模式和设备模式
   const [isDeviceModeOn, setIsDeviceModeOn] = useState(false);
 
-  // Use percentage for width
-  const [widthPercent, setWidthPercent] = useState<number>(37.5); // 375px assuming 1000px window width initially
+  // 使用百分比作为宽度
+  const [widthPercent, setWidthPercent] = useState<number>(37.5); // 假设初始窗口宽度为1000px时为375px
 
   const resizingState = useRef({
     isResizing: false,
@@ -37,8 +37,8 @@ export const Preview = memo(() => {
     windowWidth: window.innerWidth,
   });
 
-  // Define the scaling factor
-  const SCALING_FACTOR = 2; // Adjust this value to increase/decrease sensitivity
+  // 定义缩放因子
+  const SCALING_FACTOR = 2; // 调整此值以增加/减少灵敏度
 
   useEffect(() => {
     if (!activePreview) {
@@ -79,7 +79,7 @@ export const Preview = memo(() => {
     [],
   );
 
-  // When previews change, display the lowest port if user hasn't selected a preview
+  // 当预览发生变化时，如果用户没有选择预览，则显示最低端口
   useEffect(() => {
     if (previews.length > 1 && !hasSelectedPreview.current) {
       const minPortIndex = previews.reduce(findMinPortIndex, 0);
@@ -122,7 +122,7 @@ export const Preview = memo(() => {
       return;
     }
 
-    // Prevent text selection
+    // 防止文本选择
     document.body.style.userSelect = 'none';
 
     resizingState.current.isResizing = true;
@@ -134,7 +134,7 @@ export const Preview = memo(() => {
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
-    e.preventDefault(); // Prevent any text selection on mousedown
+    e.preventDefault(); // 防止在鼠标按下时选择任何文本
   };
 
   const onMouseMove = (e: MouseEvent) => {
@@ -145,7 +145,7 @@ export const Preview = memo(() => {
     const dx = e.clientX - resizingState.current.startX;
     const windowWidth = resizingState.current.windowWidth;
 
-    // Apply scaling factor to increase sensitivity
+    // 应用缩放因子以增加灵敏度
     const dxPercent = (dx / windowWidth) * 100 * SCALING_FACTOR;
 
     let newWidthPercent = resizingState.current.startWidthPercent;
@@ -156,7 +156,7 @@ export const Preview = memo(() => {
       newWidthPercent = resizingState.current.startWidthPercent - dxPercent;
     }
 
-    // Clamp the width between 10% and 90%
+    // 将宽度限制在10%到90%之间
     newWidthPercent = Math.max(10, Math.min(newWidthPercent, 90));
 
     setWidthPercent(newWidthPercent);
@@ -168,16 +168,16 @@ export const Preview = memo(() => {
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
 
-    // Restore text selection
+    // 恢复文本选择
     document.body.style.userSelect = '';
   };
 
-  // Handle window resize to ensure widthPercent remains valid
+  // 处理窗口大小调整，确保widthPercent保持有效
   useEffect(() => {
     const handleWindowResize = () => {
       /*
-       * Optional: Adjust widthPercent if necessary
-       * For now, since widthPercent is relative, no action is needed
+       * 可选：如有必要，调整widthPercent
+       * 目前，由于widthPercent是相对的，因此不需要采取任何措施
        */
     };
 
@@ -188,7 +188,7 @@ export const Preview = memo(() => {
     };
   }, []);
 
-  // A small helper component for the handle's "grip" icon
+  // 用于手柄“握把”图标的小辅助组件
   const GripIcon = () => (
     <div
       style={{
@@ -261,18 +261,18 @@ export const Preview = memo(() => {
           />
         )}
 
-        {/* Device mode toggle button */}
+        {/* 设备模式切换按钮 */}
         <IconButton
           icon="i-ph:devices"
           onClick={toggleDeviceMode}
-          title={isDeviceModeOn ? 'Switch to Responsive Mode' : 'Switch to Device Mode'}
+          title={isDeviceModeOn ? '切换到响应模式' : '切换到设备模式'}
         />
 
-        {/* Fullscreen toggle button */}
+        {/* 全屏切换按钮 */}
         <IconButton
           icon={isFullscreen ? 'i-ph:arrows-in' : 'i-ph:arrows-out'}
           onClick={toggleFullscreen}
-          title={isFullscreen ? 'Exit Full Screen' : 'Full Screen'}
+          title={isFullscreen ? '退出全屏' : '全屏'}
         />
       </div>
 
@@ -280,7 +280,7 @@ export const Preview = memo(() => {
         <div
           style={{
             width: isDeviceModeOn ? `${widthPercent}%` : '100%',
-            height: '100%', // Always full height
+            height: '100%', // 始终全高
             overflow: 'visible',
             background: '#fff',
             position: 'relative',
@@ -303,12 +303,12 @@ export const Preview = memo(() => {
               />
             </>
           ) : (
-            <div className="flex w-full h-full justify-center items-center bg-white">No preview available</div>
+            <div className="flex w-full h-full justify-center items-center bg-white">没有可用的预览</div>
           )}
 
           {isDeviceModeOn && (
             <>
-              {/* Left handle */}
+              {/* 左侧手柄 */}
               <div
                 onMouseDown={(e) => startResizing(e, 'left')}
                 style={{
@@ -328,12 +328,12 @@ export const Preview = memo(() => {
                 }}
                 onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,.5)')}
                 onMouseOut={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,.2)')}
-                title="Drag to resize width"
+                title="拖动以调整宽度"
               >
                 <GripIcon />
               </div>
 
-              {/* Right handle */}
+              {/* 右侧手柄 */}
               <div
                 onMouseDown={(e) => startResizing(e, 'right')}
                 style={{
@@ -353,7 +353,7 @@ export const Preview = memo(() => {
                 }}
                 onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,.5)')}
                 onMouseOut={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,.2)')}
-                title="Drag to resize width"
+                title="拖动以调整宽度"
               >
                 <GripIcon />
               </div>

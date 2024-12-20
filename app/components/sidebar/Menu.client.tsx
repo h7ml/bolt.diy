@@ -41,7 +41,7 @@ function CurrentDateTime() {
   useEffect(() => {
     const timer = setInterval(() => {
       setDateTime(new Date());
-    }, 60000); // Update every minute
+    }, 60000); // 每分钟更新一次
 
     return () => clearInterval(timer);
   }, []);
@@ -85,12 +85,12 @@ export const Menu = () => {
           loadEntries();
 
           if (chatId.get() === item.id) {
-            // hard page navigation to clear the stores
+            // 硬导航到页面以清除存储
             window.location.pathname = '/';
           }
         })
         .catch((error) => {
-          toast.error('Failed to delete conversation');
+          toast.error('删除对话失败');
           logger.error(error);
         });
     }
@@ -134,7 +134,7 @@ export const Menu = () => {
 
   const handleDuplicate = async (id: string) => {
     await duplicateCurrentChat(id);
-    loadEntries(); // Reload the list after duplication
+    loadEntries(); // 复制后重新加载列表
   };
 
   return (
@@ -145,7 +145,7 @@ export const Menu = () => {
       variants={menuVariants}
       className="flex selection-accent flex-col side-menu fixed top-0 w-[350px] h-full bg-bolt-elements-background-depth-2 border-r rounded-r-3xl border-bolt-elements-borderColor z-sidebar shadow-xl shadow-bolt-elements-sidebar-dropdownShadow text-sm"
     >
-      <div className="h-[60px]" /> {/* Spacer for top margin */}
+      <div className="h-[60px]" /> {/* 顶部间隔 */}
       <CurrentDateTime />
       <div className="flex-1 flex flex-col h-full w-full overflow-hidden">
         <div className="p-4 select-none">
@@ -154,23 +154,23 @@ export const Menu = () => {
             className="flex gap-2 items-center bg-bolt-elements-sidebar-buttonBackgroundDefault text-bolt-elements-sidebar-buttonText hover:bg-bolt-elements-sidebar-buttonBackgroundHover rounded-md p-2 transition-theme mb-4"
           >
             <span className="inline-block i-bolt:chat scale-110" />
-            Start new chat
+            开始新聊天
           </a>
           <div className="relative w-full">
             <input
               className="w-full bg-white dark:bg-bolt-elements-background-depth-4 relative px-2 py-1.5 rounded-md focus:outline-none placeholder-bolt-elements-textTertiary text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary border border-bolt-elements-borderColor"
               type="search"
-              placeholder="Search"
+              placeholder="搜索"
               onChange={handleSearchChange}
-              aria-label="Search chats"
+              aria-label="搜索聊天"
             />
           </div>
         </div>
-        <div className="text-bolt-elements-textPrimary font-medium pl-6 pr-5 my-2">Your Chats</div>
+        <div className="text-bolt-elements-textPrimary font-medium pl-6 pr-5 my-2">您的聊天</div>
         <div className="flex-1 overflow-auto pl-4 pr-5 pb-5">
           {filteredList.length === 0 && (
             <div className="pl-2 text-bolt-elements-textTertiary">
-              {list.length === 0 ? 'No previous conversations' : 'No matches found'}
+              {list.length === 0 ? '没有之前的对话' : '没有找到匹配项'}
             </div>
           )}
           <DialogRoot open={dialogContent !== null}>
@@ -193,18 +193,18 @@ export const Menu = () => {
             <Dialog onBackdrop={closeDialog} onClose={closeDialog}>
               {dialogContent?.type === 'delete' && (
                 <>
-                  <DialogTitle>Delete Chat?</DialogTitle>
+                  <DialogTitle>删除聊天吗？</DialogTitle>
                   <DialogDescription asChild>
                     <div>
                       <p>
-                        You are about to delete <strong>{dialogContent.item.description}</strong>.
+                        您即将删除 <strong>{dialogContent.item.description}</strong>.
                       </p>
-                      <p className="mt-1">Are you sure you want to delete this chat?</p>
+                      <p className="mt-1">您确定要删除此聊天吗？</p>
                     </div>
                   </DialogDescription>
                   <div className="px-5 pb-4 bg-bolt-elements-background-depth-2 flex gap-2 justify-end">
                     <DialogButton type="secondary" onClick={closeDialog}>
-                      Cancel
+                      取消
                     </DialogButton>
                     <DialogButton
                       type="danger"
@@ -213,7 +213,7 @@ export const Menu = () => {
                         closeDialog();
                       }}
                     >
-                      Delete
+                      删除
                     </DialogButton>
                   </div>
                 </>

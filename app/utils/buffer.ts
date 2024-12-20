@@ -2,12 +2,12 @@ export function bufferWatchEvents<T extends unknown[]>(timeInMs: number, cb: (ev
   let timeoutId: number | undefined;
   let events: T[] = [];
 
-  // keep track of the processing of the previous batch so we can wait for it
+  // Track the previous batch's processing so we can wait for it
   let processing: Promise<unknown> = Promise.resolve();
 
   const scheduleBufferTick = () => {
     timeoutId = self.setTimeout(async () => {
-      // we wait until the previous batch is entirely processed so events are processed in order
+      // We wait until the previous batch is fully processed to handle events in order
       await processing;
 
       if (events.length > 0) {

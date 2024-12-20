@@ -42,7 +42,7 @@ export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
       return;
     }
 
-    const repoUrl = prompt('Enter the Git url');
+    const repoUrl = prompt('输入 Git 的 URL');
 
     if (repoUrl) {
       const { workdir, data } = await gitClone(repoUrl);
@@ -53,7 +53,7 @@ export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
 
         const textDecoder = new TextDecoder('utf-8');
 
-        // Convert files to common format for command detection
+        // 将文件转换为常见格式以进行命令检测
         const fileContents = filePaths
           .map((filePath) => {
             const { data: content, encoding } = data[filePath];
@@ -64,15 +64,15 @@ export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
           })
           .filter((f) => f.content);
 
-        // Detect and create commands message
+        // 检测并创建命令消息
         const commands = await detectProjectCommands(fileContents);
         const commandsMessage = createCommandsMessage(commands);
 
-        // Create files message
+        // 创建文件消息
         const filesMessage: Message = {
           role: 'assistant',
-          content: `Cloning the repo ${repoUrl} into ${workdir}
-<boltArtifact id="imported-files" title="Git Cloned Files" type="bundled">
+          content: `将 repo ${repoUrl} 克隆到 ${workdir}
+<boltArtifact id="imported-files" title="Git 克隆的文件" type="bundled">
 ${fileContents
   .map(
     (file) =>
@@ -92,7 +92,7 @@ ${file.content}
           messages.push(commandsMessage);
         }
 
-        await importChat(`Git Project:${repoUrl.split('/').slice(-1)[0]}`, messages);
+        await importChat(`Git 项目:${repoUrl.split('/').slice(-1)[0]}`, messages);
       }
     }
   };
@@ -100,11 +100,11 @@ ${file.content}
   return (
     <button
       onClick={onClick}
-      title="Clone a Git Repo"
+      title="克隆 Git 仓库"
       className="px-4 py-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary hover:bg-bolt-elements-background-depth-3 transition-all flex items-center gap-2"
     >
       <span className="i-ph:git-branch" />
-      Clone a Git Repo
+      克隆 Git 仓库
     </button>
   );
 }

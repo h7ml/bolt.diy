@@ -11,7 +11,7 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import type { IProviderSetting, ProviderInfo } from '~/types/model';
-import { logStore } from '~/lib/stores/logs'; // assuming logStore is imported from this location
+import { logStore } from '~/lib/stores/logs'; // 假设 logStore 是从此位置导入的
 import commit from '~/commit.json';
 
 interface CommitData {
@@ -30,7 +30,7 @@ export function useSettings() {
   const isLatestBranch = useStore(latestBranchStore);
   const [activeProviders, setActiveProviders] = useState<ProviderInfo[]>([]);
 
-  // Function to check if we're on stable version
+  // 检查我们是否在稳定版本中的函数
   const checkIsStableVersion = async () => {
     try {
       const stableResponse = await fetch(
@@ -38,7 +38,7 @@ export function useSettings() {
       );
 
       if (!stableResponse.ok) {
-        console.warn('Failed to fetch stable commit info');
+        console.warn('获取稳定提交信息失败');
         return false;
       }
 
@@ -46,12 +46,12 @@ export function useSettings() {
 
       return commit.commit === stableData.commit;
     } catch (error) {
-      console.warn('Error checking stable version:', error);
+      console.warn('检查稳定版本时出错:', error);
       return false;
     }
   };
 
-  // reading values from cookies on mount
+  // 在挂载时从 cookies 中读取值
   useEffect(() => {
     const savedProviders = Cookies.get('providers');
 
@@ -69,25 +69,25 @@ export function useSettings() {
           });
         });
       } catch (error) {
-        console.error('Failed to parse providers from cookies:', error);
+        console.error('从 cookies 中解析 providers 失败:', error);
       }
     }
 
-    // load debug mode from cookies
+    // 从 cookies 中加载调试模式
     const savedDebugMode = Cookies.get('isDebugEnabled');
 
     if (savedDebugMode) {
       isDebugMode.set(savedDebugMode === 'true');
     }
 
-    // load event logs from cookies
+    // 从 cookies 中加载事件日志
     const savedEventLogs = Cookies.get('isEventLogsEnabled');
 
     if (savedEventLogs) {
       isEventLogsEnabled.set(savedEventLogs === 'true');
     }
 
-    // load local models from cookies
+    // 从 cookies 中加载本地模型
     const savedLocalModels = Cookies.get('isLocalModelsEnabled');
 
     if (savedLocalModels) {
@@ -100,7 +100,7 @@ export function useSettings() {
       promptStore.set(promptId);
     }
 
-    // load latest branch setting from cookies or determine based on version
+    // 从 cookies 中加载最新分支设置或根据版本确定
     const savedLatestBranch = Cookies.get('isLatestBranch');
     let checkCommit = Cookies.get('commitHash');
 
@@ -109,7 +109,7 @@ export function useSettings() {
     }
 
     if (savedLatestBranch === undefined || checkCommit !== commit.commit) {
-      // If setting hasn't been set by user, check version
+      // 如果用户未设置设置，检查版本
       checkIsStableVersion().then((isStable) => {
         const shouldUseLatest = !isStable;
         latestBranchStore.set(shouldUseLatest);
@@ -121,7 +121,7 @@ export function useSettings() {
     }
   }, []);
 
-  // writing values to cookies on change
+  // 在更改时向 cookies 写入值
   useEffect(() => {
     const providers = providersStore.get();
     const providerSetting: Record<string, IProviderSetting> = {};
@@ -143,7 +143,7 @@ export function useSettings() {
     setActiveProviders(active);
   }, [providers, isLocalModel]);
 
-  // helper function to update settings
+  // 更新设置的辅助函数
   const updateProviderSettings = useCallback(
     (provider: string, config: IProviderSetting) => {
       const settings = providers[provider].settings;
@@ -154,19 +154,19 @@ export function useSettings() {
 
   const enableDebugMode = useCallback((enabled: boolean) => {
     isDebugMode.set(enabled);
-    logStore.logSystem(`Debug mode ${enabled ? 'enabled' : 'disabled'}`);
+    logStore.logSystem(`调试模式 ${enabled ? '启用' : '禁用'}`);
     Cookies.set('isDebugEnabled', String(enabled));
   }, []);
 
   const enableEventLogs = useCallback((enabled: boolean) => {
     isEventLogsEnabled.set(enabled);
-    logStore.logSystem(`Event logs ${enabled ? 'enabled' : 'disabled'}`);
+    logStore.logSystem(`事件日志 ${enabled ? '启用' : '禁用'}`);
     Cookies.set('isEventLogsEnabled', String(enabled));
   }, []);
 
   const enableLocalModels = useCallback((enabled: boolean) => {
     isLocalModelsEnabled.set(enabled);
-    logStore.logSystem(`Local models ${enabled ? 'enabled' : 'disabled'}`);
+    logStore.logSystem(`本地模型 ${enabled ? '启用' : '禁用'}`);
     Cookies.set('isLocalModelsEnabled', String(enabled));
   }, []);
 
@@ -174,9 +174,10 @@ export function useSettings() {
     promptStore.set(promptId);
     Cookies.set('promptId', promptId);
   }, []);
+
   const enableLatestBranch = useCallback((enabled: boolean) => {
     latestBranchStore.set(enabled);
-    logStore.logSystem(`Main branch updates ${enabled ? 'enabled' : 'disabled'}`);
+    logStore.logSystem(`主分支更新 ${enabled ? '启用' : '禁用'}`);
     Cookies.set('isLatestBranch', String(enabled));
   }, []);
 

@@ -33,26 +33,26 @@ export default function EventLogsTab() {
   }, []);
 
   useEffect(() => {
-    // System info logs
-    logStore.logSystem('Application initialized', {
+    // 系统信息日志
+    logStore.logSystem('应用程序已初始化', {
       version: process.env.NEXT_PUBLIC_APP_VERSION,
       environment: process.env.NODE_ENV,
     });
 
-    // Debug logs for system state
-    logStore.logDebug('System configuration loaded', {
+    // 系统状态的调试日志
+    logStore.logDebug('系统配置已加载', {
       runtime: 'Next.js',
-      features: ['AI Chat', 'Event Logging'],
+      features: ['AI Chat', '事件日志记录'],
     });
 
-    // Warning logs for potential issues
-    logStore.logWarning('Resource usage threshold approaching', {
+    // 潜在问题的警告日志
+    logStore.logWarning('资源使用阈值接近', {
       memoryUsage: '75%',
       cpuLoad: '60%',
     });
 
-    // Error logs with detailed context
-    logStore.logError('API connection failed', new Error('Connection timeout'), {
+    // 带有详细上下文的错误日志
+    logStore.logError('API 连接失败', new Error('连接超时'), {
       endpoint: '/api/chat',
       retryCount: 3,
       lastAttempt: new Date().toISOString(),
@@ -68,10 +68,10 @@ export default function EventLogsTab() {
   }, [filteredLogs, autoScroll]);
 
   const handleClearLogs = useCallback(() => {
-    if (confirm('Are you sure you want to clear all logs?')) {
+    if (confirm('您确定要清除所有日志吗？')) {
       logStore.clearLogs();
-      toast.success('Logs cleared successfully');
-      forceUpdate({}); // Force a re-render after clearing logs
+      toast.success('日志成功清除');
+      forceUpdate({}); // 清除日志后强制重新渲染
     }
   }, []);
 
@@ -82,7 +82,7 @@ export default function EventLogsTab() {
         .map(
           (log) =>
             `[${log.level.toUpperCase()}] ${log.timestamp} - ${log.message}${
-              log.details ? '\nDetails: ' + JSON.stringify(log.details, null, 2) : ''
+              log.details ? '\n详情: ' + JSON.stringify(log.details, null, 2) : ''
             }`,
         )
         .join('\n\n');
@@ -96,10 +96,10 @@ export default function EventLogsTab() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      toast.success('Logs exported successfully');
+      toast.success('日志成功导出');
     } catch (error) {
-      toast.error('Failed to export logs');
-      console.error('Export error:', error);
+      toast.error('导出日志失败');
+      console.error('导出错误:', error);
     }
   }, []);
 
@@ -121,38 +121,38 @@ export default function EventLogsTab() {
   return (
     <div className="p-4 h-full flex flex-col">
       <div className="flex flex-col space-y-4 mb-4">
-        {/* Title and Toggles Row */}
+        {/* 标题和切换按钮行 */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h3 className="text-lg font-medium text-bolt-elements-textPrimary">Event Logs</h3>
+          <h3 className="text-lg font-medium text-bolt-elements-textPrimary">事件日志</h3>
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-bolt-elements-textSecondary whitespace-nowrap">Show Actions</span>
+              <span className="text-sm text-bolt-elements-textSecondary whitespace-nowrap">显示操作</span>
               <Switch checked={showLogs} onCheckedChange={(checked) => logStore.showLogs.set(checked)} />
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-bolt-elements-textSecondary whitespace-nowrap">Auto-scroll</span>
+              <span className="text-sm text-bolt-elements-textSecondary whitespace-nowrap">自动滚动</span>
               <Switch checked={autoScroll} onCheckedChange={setAutoScroll} />
             </div>
           </div>
         </div>
 
-        {/* Controls Row */}
+        {/* 控制行 */}
         <div className="flex flex-wrap items-center gap-2">
           <select
             value={logLevel}
             onChange={(e) => setLogLevel(e.target.value as LogEntry['level'])}
             className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all lg:max-w-[20%] text-sm min-w-[100px]"
           >
-            <option value="all">All</option>
-            <option value="info">Info</option>
-            <option value="warning">Warning</option>
-            <option value="error">Error</option>
-            <option value="debug">Debug</option>
+            <option value="all">所有</option>
+            <option value="info">信息</option>
+            <option value="warning">警告</option>
+            <option value="error">错误</option>
+            <option value="debug">调试</option>
           </select>
           <div className="flex-1 min-w-[200px]">
             <input
               type="text"
-              placeholder="Search logs..."
+              placeholder="搜索日志..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white dark:bg-bolt-elements-background-depth-4 relative px-2 py-1.5 rounded-md focus:outline-none placeholder-bolt-elements-textTertiary text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary border border-bolt-elements-borderColor"
@@ -169,7 +169,7 @@ export default function EventLogsTab() {
                   'text-bolt-elements-button-primary-text',
                 )}
               >
-                Export Logs
+                导出日志
               </button>
               <button
                 onClick={handleClearLogs}
@@ -180,7 +180,7 @@ export default function EventLogsTab() {
                   'text-bolt-elements-button-danger-text',
                 )}
               >
-                Clear Logs
+                清除日志
               </button>
             </div>
           )}
@@ -189,7 +189,7 @@ export default function EventLogsTab() {
 
       <div className="bg-bolt-elements-bg-depth-1 rounded-lg p-4 h-[calc(100vh - 250px)] min-h-[400px] overflow-y-auto logs-container overflow-y-auto">
         {filteredLogs.length === 0 ? (
-          <div className="text-center text-bolt-elements-textSecondary py-8">No logs found</div>
+          <div className="text-center text-bolt-elements-textSecondary py-8">未找到日志</div>
         ) : (
           filteredLogs.map((log, index) => (
             <div

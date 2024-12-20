@@ -1,6 +1,6 @@
 /*
  * @ts-nocheck
- * Preventing TS checks with files presented in the video for a better presentation.
+ * 防止 TS 检查通过视频中呈现的文件，以获得更好的演示效果。
  */
 import { useStore } from '@nanostores/react';
 import type { Message } from 'ai';
@@ -56,7 +56,7 @@ export function Chat() {
         }}
         icon={({ type }) => {
           /**
-           * @todo Handle more types if we need them. This may require extra color palettes.
+           * @todo 如果我们需要更多类型，请处理更多类型。这可能需要额外的色彩调色板。
            */
           switch (type) {
             case 'success': {
@@ -91,8 +91,8 @@ export const ChatImpl = memo(
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [chatStarted, setChatStarted] = useState(initialMessages.length > 0);
-    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]); // Move here
-    const [imageDataList, setImageDataList] = useState<string[]>([]); // Move here
+    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]); // 移动到这里
+    const [imageDataList, setImageDataList] = useState<string[]>([]); // 移动到这里
     const [searchParams, setSearchParams] = useSearchParams();
     const files = useStore(workbenchStore.files);
     const { activeProviders, promptId } = useSettings();
@@ -121,21 +121,19 @@ export const ChatImpl = memo(
       },
       sendExtraMessageFields: true,
       onError: (error) => {
-        logger.error('Request failed\n\n', error);
-        toast.error(
-          'There was an error processing your request: ' + (error.message ? error.message : 'No details were returned'),
-        );
+        logger.error('请求失败\n\n', error);
+        toast.error('处理您的请求时发生错误: ' + (error.message ? error.message : '没有返回详细信息'));
       },
       onFinish: (message, response) => {
         const usage = response.usage;
 
         if (usage) {
-          console.log('Token usage:', usage);
+          console.log('Token 使用情况:', usage);
 
-          // You can now use the usage data as needed
+          // 现在您可以根据需要使用使用数据
         }
 
-        logger.debug('Finished streaming');
+        logger.debug('完成流处理');
       },
       initialMessages,
       initialInput: Cookies.get(PROMPT_COOKIE_KEY) || '',
@@ -152,9 +150,9 @@ export const ChatImpl = memo(
           content: [
             {
               type: 'text',
-              text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${prompt}`,
+              text: `[模型: ${model}]\n\n[提供者: ${provider.name}]\n\n${prompt}`,
             },
-          ] as any, // Type assertion to bypass compiler check
+          ] as any, // 类型断言以绕过编译器检查
         });
       }
     }, [model, provider, searchParams]);
@@ -226,11 +224,9 @@ export const ChatImpl = memo(
       }
 
       /**
-       * @note (delm) Usually saving files shouldn't take long but it may take longer if there
-       * many unsaved files. In that case we need to block user input and show an indicator
-       * of some kind so the user is aware that something is happening. But I consider the
-       * happy case to be no unsaved files and I would expect users to save their changes
-       * before they send another message.
+       * @note (delm) 通常保存文件不会花太长时间，但如果有很多未保存文件，则可能会更长。
+       * 在这种情况下，我们需要阻止用户输入，并显示某种指示器，以便用户知道发生了什么。
+       * 但我认为美好的案例是没有未保存文件，我希望用户在发送另一个消息之前保存他们的更改。
        */
       await workbenchStore.saveAllFiles();
 
@@ -242,29 +238,27 @@ export const ChatImpl = memo(
 
       if (fileModifications !== undefined) {
         /**
-         * If we have file modifications we append a new user message manually since we have to prefix
-         * the user input with the file modifications and we don't want the new user input to appear
-         * in the prompt. Using `append` is almost the same as `handleSubmit` except that we have to
-         * manually reset the input and we'd have to manually pass in file attachments. However, those
-         * aren't relevant here.
+         * 如果我们有文件修改，我们手动追加一条新的用户消息，因为我们必须在前面添加
+         * 文件修改，并且不希望新的用户输入出现在提示中。使用 `append` 几乎与 `handleSubmit` 相同，
+         * 只是我们必须手动重置输入，并且我们必须手动传递文件附件。然而，这些在这里并不相关。
          */
         append({
           role: 'user',
           content: [
             {
               type: 'text',
-              text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${_input}`,
+              text: `[模型: ${model}]\n\n[提供者: ${provider.name}]\n\n${_input}`,
             },
             ...imageDataList.map((imageData) => ({
               type: 'image',
               image: imageData,
             })),
-          ] as any, // Type assertion to bypass compiler check
+          ] as any, // 类型断言以绕过编译器检查
         });
 
         /**
-         * After sending a new message we reset all modifications since the model
-         * should now be aware of all the changes.
+         * 在发送新消息后，我们重置所有修改，因为模型
+         * 现在应该知道所有的变化。
          */
         workbenchStore.resetAllFileModifications();
       } else {
@@ -273,20 +267,20 @@ export const ChatImpl = memo(
           content: [
             {
               type: 'text',
-              text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${_input}`,
+              text: `[模型: ${model}]\n\n[提供者: ${provider.name}]\n\n${_input}`,
             },
             ...imageDataList.map((imageData) => ({
               type: 'image',
               image: imageData,
             })),
-          ] as any, // Type assertion to bypass compiler check
+          ] as any, // 类型断言以绕过编译器检查
         });
       }
 
       setInput('');
       Cookies.remove(PROMPT_COOKIE_KEY);
 
-      // Add file cleanup here
+      // 在这里添加文件清理
       setUploadedFiles([]);
       setImageDataList([]);
 
@@ -296,16 +290,16 @@ export const ChatImpl = memo(
     };
 
     /**
-     * Handles the change event for the textarea and updates the input state.
-     * @param event - The change event from the textarea.
+     * 处理文本区域的变化事件并更新输入状态。
+     * @param event -文本区域的变化事件。
      */
     const onTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       handleInputChange(event);
     };
 
     /**
-     * Debounced function to cache the prompt in cookies.
-     * Caches the trimmed value of the textarea input after a delay to optimize performance.
+     * 防抖函数将提示缓存到 cookies。
+     * 在延迟后缓存文本区域输入的修剪值以优化性能。
      */
     const debouncedCachePrompt = useCallback(
       debounce((event: React.ChangeEvent<HTMLTextAreaElement>) => {

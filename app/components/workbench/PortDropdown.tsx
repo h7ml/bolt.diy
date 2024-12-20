@@ -22,12 +22,12 @@ export const PortDropdown = memo(
   }: PortDropdownProps) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // sort previews, preserving original index
+    // 对预览进行排序，保留原始索引
     const sortedPreviews = previews
       .map((previewInfo, index) => ({ ...previewInfo, index }))
       .sort((a, b) => a.port - b.port);
 
-    // close dropdown if user clicks outside
+    // 如果用户点击外部，则关闭下拉菜单
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -52,7 +52,7 @@ export const PortDropdown = memo(
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 bg-bolt-elements-background-depth-2 border border-bolt-elements-borderColor rounded shadow-sm min-w-[140px] dropdown-animation">
             <div className="px-4 py-2 border-b border-bolt-elements-borderColor text-sm font-semibold text-bolt-elements-textPrimary">
-              Ports
+              端口
             </div>
             {sortedPreviews.map((preview) => (
               <div

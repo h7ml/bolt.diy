@@ -29,14 +29,14 @@ export const Messages = React.forwardRef<HTMLDivElement, MessagesProps>((props: 
   const handleFork = async (messageId: string) => {
     try {
       if (!db || !chatId.get()) {
-        toast.error('Chat persistence is not available');
+        toast.error('聊天持久化不可用');
         return;
       }
 
       const urlId = await forkChat(db, chatId.get()!, messageId);
       window.location.href = `/chat/${urlId}`;
     } catch (error) {
-      toast.error('Failed to fork chat: ' + (error as Error).message);
+      toast.error('创建聊天分支失败: ' + (error as Error).message);
     }
   };
 
@@ -74,7 +74,7 @@ export const Messages = React.forwardRef<HTMLDivElement, MessagesProps>((props: 
                 {!isUserMessage && (
                   <div className="flex gap-2 flex-col lg:flex-row">
                     {messageId && (
-                      <WithTooltip tooltip="Revert to this message">
+                      <WithTooltip tooltip="恢复到此消息">
                         <button
                           onClick={() => handleRewind(messageId)}
                           key="i-ph:arrow-u-up-left"
@@ -86,7 +86,7 @@ export const Messages = React.forwardRef<HTMLDivElement, MessagesProps>((props: 
                       </WithTooltip>
                     )}
 
-                    <WithTooltip tooltip="Fork chat from this message">
+                    <WithTooltip tooltip="从此消息创建聊天分支">
                       <button
                         onClick={() => handleFork(messageId)}
                         key="i-ph:git-fork"

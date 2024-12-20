@@ -105,9 +105,8 @@ export class StreamingMessageParser {
               messageId,
 
               /**
-               * We decrement the id because it's been incremented already
-               * when `onActionOpen` was emitted to make sure the ids are
-               * the same.
+               * 我们减去 id，因为它在`onActionOpen`被发出时已经被增加
+               * 以确保 ids 是相同的。
                */
               actionId: String(state.actionId - 1),
 
@@ -196,11 +195,11 @@ export class StreamingMessageParser {
               const artifactId = this.#extractAttribute(artifactTag, 'id') as string;
 
               if (!artifactTitle) {
-                logger.warn('Artifact title missing');
+                logger.warn('缺少 Artifact 标题');
               }
 
               if (!artifactId) {
-                logger.warn('Artifact id missing');
+                logger.warn('缺少 Artifact id');
               }
 
               state.insideArtifact = true;
@@ -270,12 +269,12 @@ export class StreamingMessageParser {
       const filePath = this.#extractAttribute(actionTag, 'filePath') as string;
 
       if (!filePath) {
-        logger.debug('File path not specified');
+        logger.debug('文件路径未指定');
       }
 
       (actionAttributes as FileAction).filePath = filePath;
     } else if (!['shell', 'start'].includes(actionType)) {
-      logger.warn(`Unknown action type '${actionType}'`);
+      logger.warn(`未知的操作类型 '${actionType}'`);
     }
 
     return actionAttributes as FileAction | ShellAction;

@@ -6,7 +6,7 @@ import { logStore } from '~/lib/stores/logs';
 interface GitHubUserResponse {
   login: string;
   id: number;
-  [key: string]: any; // for other properties we don't explicitly need
+  [key: string]: any; // 用于其他我们不明确需要的属性
 }
 
 export default function ConnectionsTab() {
@@ -16,7 +16,7 @@ export default function ConnectionsTab() {
   const [isVerifying, setIsVerifying] = useState(false);
 
   useEffect(() => {
-    // Check if credentials exist and verify them
+    // 检查凭据是否存在并验证它们
     if (githubUsername && githubToken) {
       verifyGitHubCredentials();
     }
@@ -45,7 +45,7 @@ export default function ConnectionsTab() {
 
       return false;
     } catch (error) {
-      console.error('Error verifying GitHub credentials:', error);
+      console.error('验证 GitHub 凭据时出错:', error);
       setIsConnected(false);
 
       return false;
@@ -56,7 +56,7 @@ export default function ConnectionsTab() {
 
   const handleSaveConnection = async () => {
     if (!githubUsername || !githubToken) {
-      toast.error('Please provide both GitHub username and token');
+      toast.error('请提供 GitHub 用户名和令牌');
       return;
     }
 
@@ -67,15 +67,15 @@ export default function ConnectionsTab() {
     if (isValid) {
       Cookies.set('githubUsername', githubUsername);
       Cookies.set('githubToken', githubToken);
-      logStore.logSystem('GitHub connection settings updated', {
+      logStore.logSystem('GitHub 连接设置已更新', {
         username: githubUsername,
         hasToken: !!githubToken,
       });
-      toast.success('GitHub credentials verified and saved successfully!');
+      toast.success('GitHub 凭据已成功验证并保存！');
       Cookies.set('git:github.com', JSON.stringify({ username: githubToken, password: 'x-oauth-basic' }));
       setIsConnected(true);
     } else {
-      toast.error('Invalid GitHub credentials. Please check your username and token.');
+      toast.error('无效的 GitHub 凭据。请检查您的用户名和令牌。');
     }
   };
 
@@ -86,16 +86,16 @@ export default function ConnectionsTab() {
     setGithubUsername('');
     setGithubToken('');
     setIsConnected(false);
-    logStore.logSystem('GitHub connection removed');
-    toast.success('GitHub connection removed successfully!');
+    logStore.logSystem('GitHub 连接已移除');
+    toast.success('GitHub 连接已成功移除！');
   };
 
   return (
     <div className="p-4 mb-4 border border-bolt-elements-borderColor rounded-lg bg-bolt-elements-background-depth-3">
-      <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">GitHub Connection</h3>
+      <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">GitHub 连接</h3>
       <div className="flex mb-4">
         <div className="flex-1 mr-2">
-          <label className="block text-sm text-bolt-elements-textSecondary mb-1">GitHub Username:</label>
+          <label className="block text-sm text-bolt-elements-textSecondary mb-1">GitHub 用户名：</label>
           <input
             type="text"
             value={githubUsername}
@@ -105,7 +105,7 @@ export default function ConnectionsTab() {
           />
         </div>
         <div className="flex-1">
-          <label className="block text-sm text-bolt-elements-textSecondary mb-1">Personal Access Token:</label>
+          <label className="block text-sm text-bolt-elements-textSecondary mb-1">个人访问令牌：</label>
           <input
             type="password"
             value={githubToken}
@@ -125,10 +125,10 @@ export default function ConnectionsTab() {
             {isVerifying ? (
               <>
                 <div className="i-ph:spinner animate-spin mr-2" />
-                Verifying...
+                验证中...
               </>
             ) : (
-              'Connect'
+              '连接'
             )}
           </button>
         ) : (
@@ -136,13 +136,13 @@ export default function ConnectionsTab() {
             onClick={handleDisconnect}
             className="bg-bolt-elements-button-danger-background rounded-lg px-4 py-2 mr-2 transition-colors duration-200 hover:bg-bolt-elements-button-danger-backgroundHover text-bolt-elements-button-danger-text"
           >
-            Disconnect
+            断开连接
           </button>
         )}
         {isConnected && (
           <span className="text-sm text-green-600 flex items-center">
             <div className="i-ph:check-circle mr-1" />
-            Connected to GitHub
+            已连接到 GitHub
           </span>
         )}
       </div>

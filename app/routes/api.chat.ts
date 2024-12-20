@@ -75,19 +75,19 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
                     },
                   });
                 },
-                onError: (error: any) => `Custom error: ${error.message}`,
+                onError: (error: any) => `自定义错误: ${error.message}`,
               }),
             )
             .then(() => stream.close());
         }
 
         if (stream.switches >= MAX_RESPONSE_SEGMENTS) {
-          throw Error('Cannot continue message: Maximum segments reached');
+          throw Error('无法继续消息：达到最大段数');
         }
 
         const switchesLeft = MAX_RESPONSE_SEGMENTS - stream.switches;
 
-        console.log(`Reached max token limit (${MAX_TOKENS}): Continuing message (${switchesLeft} switches left)`);
+        console.log(`达到最大令牌限制 (${MAX_TOKENS}): 继续消息 (${switchesLeft} 次切换剩余)`);
 
         messages.push({ role: 'assistant', content });
         messages.push({ role: 'user', content: CONTINUE_PROMPT });
@@ -128,15 +128,15 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
     console.error(error);
 
     if (error.message?.includes('API key')) {
-      throw new Response('Invalid or missing API key', {
+      throw new Response('无效或缺失的 API 密钥', {
         status: 401,
-        statusText: 'Unauthorized',
+        statusText: '未经授权',
       });
     }
 
     throw new Response(null, {
       status: 500,
-      statusText: 'Internal Server Error',
+      statusText: '内部服务器错误',
     });
   }
 }

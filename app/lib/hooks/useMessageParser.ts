@@ -22,7 +22,7 @@ const messageParser = new StreamingMessageParser({
     onActionOpen: (data) => {
       logger.trace('onActionOpen', data.action);
 
-      // we only add shell actions when when the close tag got parsed because only then we have the content
+      // 只有当关闭标签被解析时我们才添加 shell 操作，因为只有那时我们才有内容
       if (data.action.type === 'file') {
         workbenchStore.addAction(data);
       }

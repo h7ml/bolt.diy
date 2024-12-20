@@ -109,7 +109,7 @@ export class WorkbenchStore {
     this.#editorStore.setDocuments(files);
 
     if (this.#filesStore.filesCount > 0 && this.currentDocument.get() === undefined) {
-      // we find the first file and select it
+      // 找到第一个文件并选择它
       for (const [filePath, dirent] of Object.entries(files)) {
         if (dirent?.type === 'file') {
           this.setSelectedFile(filePath);
@@ -230,7 +230,7 @@ export class WorkbenchStore {
   }
 
   abortAllActions() {
-    // TODO: what do we wanna do and how do we wanna recover from this?
+    // TODO: 我们想要怎么做以及如何从中恢复？
   }
 
   addArtifact({ messageId, title, id, type }: ArtifactCallbackData) {
@@ -273,7 +273,7 @@ export class WorkbenchStore {
     const artifact = this.#getArtifact(messageId);
 
     if (!artifact) {
-      unreachable('Artifact not found');
+      unreachable('未找到文物');
     }
 
     return artifact.runner.addAction(data);
@@ -292,7 +292,7 @@ export class WorkbenchStore {
     const artifact = this.#getArtifact(messageId);
 
     if (!artifact) {
-      unreachable('Artifact not found');
+      unreachable('未找到文物');
     }
 
     const action = artifact.runner.actions.get()[data.actionId];
@@ -332,7 +332,7 @@ export class WorkbenchStore {
 
   actionStreamSampler = createSampler(async (data: ActionCallbackData, isStreaming: boolean = false) => {
     return await this._runAction(data, isStreaming);
-  }, 100); // TODO: remove this magic number to have it configurable
+  }, 100); // TODO: 删除这个魔法数字，使其可配置
 
   #getArtifact(id: string) {
     const artifacts = this.artifacts.get();
@@ -343,10 +343,10 @@ export class WorkbenchStore {
     const zip = new JSZip();
     const files = this.files.get();
 
-    // Get the project name from the description input, or use a default name
+    // 从描述输入中获取项目名称，或使用默认名称
     const projectName = (description.value ?? 'project').toLocaleLowerCase().split(' ').join('_');
 
-    // Generate a simple 6-character hash based on the current timestamp
+    // 根据当前时间戳生成简单的6字符哈希
     const timestampHash = Date.now().toString(36).slice(-6);
     const uniqueProjectName = `${projectName}_${timestampHash}`;
 
@@ -354,10 +354,10 @@ export class WorkbenchStore {
       if (dirent?.type === 'file' && !dirent.isBinary) {
         const relativePath = extractRelativePath(filePath);
 
-        // split the path into segments
+        // 将路径拆分为多个段
         const pathSegments = relativePath.split('/');
 
-        // if there's more than one segment, we need to create folders
+        // 如果有多个段，我们需要创建文件夹
         if (pathSegments.length > 1) {
           let currentFolder = zip;
 
@@ -366,13 +366,13 @@ export class WorkbenchStore {
           }
           currentFolder.file(pathSegments[pathSegments.length - 1], dirent.content);
         } else {
-          // if there's only one segment, it's a file in the root
+          // 如果只有一个段，它是在根目录中的文件
           zip.file(relativePath, dirent.content);
         }
       }
     }
 
-    // Generate the zip file and save it
+    // 生成zip文件并保存
     const content = await zip.generateAsync({ type: 'blob' });
     saveAs(content, `${uniqueProjectName}.zip`);
   }
@@ -391,12 +391,12 @@ export class WorkbenchStore {
           currentHandle = await currentHandle.getDirectoryHandle(pathSegments[i], { create: true });
         }
 
-        // create or get the file
+        // 创建或获取文件
         const fileHandle = await currentHandle.getFileHandle(pathSegments[pathSegments.length - 1], {
           create: true,
         });
 
-        // write the file content
+        // 写入文件内容
         const writable = await fileHandle.createWritable();
         await writable.write(dirent.content);
         await writable.close();
@@ -410,18 +410,18 @@ export class WorkbenchStore {
 
   async pushToGitHub(repoName: string, githubUsername?: string, ghToken?: string) {
     try {
-      // Use cookies if username and token are not provided
+      // 如果未提供用户名和令牌，则使用cookies
       const githubToken = ghToken || Cookies.get('githubToken');
       const owner = githubUsername || Cookies.get('githubUsername');
 
       if (!githubToken || !owner) {
-        throw new Error('GitHub token or username is not set in cookies or provided.');
+        throw new Error('GitHub令牌或用户名未在cookie中设置或未提供。');
       }
 
-      // Initialize Octokit with the auth token
+      // 使用auth令牌初始化Octokit
       const octokit = new Octokit({ auth: githubToken });
 
-      // Check if the repository already exists before creating it
+      // 在创建之前检查存储库是否已存在
       let repo: RestEndpointMethodTypes['repos']['get']['response']['data'];
 
       try {
@@ -429,7 +429,7 @@ export class WorkbenchStore {
         repo = resp.data;
       } catch (error) {
         if (error instanceof Error && 'status' in error && error.status === 404) {
-          // Repository doesn't exist, so create a new one
+          // 存储库不存在，因此创建一个新的
           const { data: newRepo } = await octokit.repos.createForAuthenticatedUser({
             name: repoName,
             private: false,
@@ -437,19 +437,19 @@ export class WorkbenchStore {
           });
           repo = newRepo;
         } else {
-          console.log('cannot create repo!');
-          throw error; // Some other error occurred
+          console.log('无法创建存储库！');
+          throw error; // 发生其他错误
         }
       }
 
-      // Get all files
+      // 获取所有文件
       const files = this.files.get();
 
       if (!files || Object.keys(files).length === 0) {
-        throw new Error('No files found to push');
+        throw new Error('未找到要推送的文件');
       }
 
-      // Create blobs for each file
+      // 为每个文件创建blob
       const blobs = await Promise.all(
         Object.entries(files).map(async ([filePath, dirent]) => {
           if (dirent?.type === 'file' && dirent.content) {
@@ -466,21 +466,21 @@ export class WorkbenchStore {
         }),
       );
 
-      const validBlobs = blobs.filter(Boolean); // Filter out any undefined blobs
+      const validBlobs = blobs.filter(Boolean); // 过滤掉任何未定义的blob
 
       if (validBlobs.length === 0) {
-        throw new Error('No valid files to push');
+        throw new Error('没有有效的文件可以推送');
       }
 
-      // Get the latest commit SHA (assuming main branch, update dynamically if needed)
+      // 获取最新的提交SHA（假设为main分支，如果需要动态更新）
       const { data: ref } = await octokit.git.getRef({
         owner: repo.owner.login,
         repo: repo.name,
-        ref: `heads/${repo.default_branch || 'main'}`, // Handle dynamic branch
+        ref: `heads/${repo.default_branch || 'main'}`, // 处理动态分支
       });
       const latestCommitSha = ref.object.sha;
 
-      // Create a new tree
+      // 创建一个新的树
       const { data: newTree } = await octokit.git.createTree({
         owner: repo.owner.login,
         repo: repo.name,
@@ -493,27 +493,27 @@ export class WorkbenchStore {
         })),
       });
 
-      // Create a new commit
+      // 创建一个新的提交
       const { data: newCommit } = await octokit.git.createCommit({
         owner: repo.owner.login,
         repo: repo.name,
-        message: 'Initial commit from your app',
+        message: '来自您的应用的初始提交',
         tree: newTree.sha,
         parents: [latestCommitSha],
       });
 
-      // Update the reference
+      // 更新引用
       await octokit.git.updateRef({
         owner: repo.owner.login,
         repo: repo.name,
-        ref: `heads/${repo.default_branch || 'main'}`, // Handle dynamic branch
+        ref: `heads/${repo.default_branch || 'main'}`, // 处理动态分支
         sha: newCommit.sha,
       });
 
-      alert(`Repository created and code pushed: ${repo.html_url}`);
+      alert(`存储库创建并推送代码：${repo.html_url}`);
     } catch (error) {
-      console.error('Error pushing to GitHub:', error);
-      throw error; // Rethrow the error for further handling
+      console.error('推送到GitHub时出错：', error);
+      throw error; // 重新抛出错误以进一步处理
     }
   }
 }

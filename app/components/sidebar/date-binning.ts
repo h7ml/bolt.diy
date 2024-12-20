@@ -31,29 +31,29 @@ export function binDates(_list: ChatHistoryItem[]) {
 
 function dateCategory(date: Date) {
   if (isToday(date)) {
-    return 'Today';
+    return '今天';
   }
 
   if (isYesterday(date)) {
-    return 'Yesterday';
+    return '昨天';
   }
 
   if (isThisWeek(date)) {
-    // e.g., "Monday"
+    // 例如，"周一"
     return format(date, 'eeee');
   }
 
   const thirtyDaysAgo = subDays(new Date(), 30);
 
   if (isAfter(date, thirtyDaysAgo)) {
-    return 'Last 30 Days';
+    return '过去30天';
   }
 
   if (isThisYear(date)) {
-    // e.g., "July"
+    // 例如，"七月"
     return format(date, 'MMMM');
   }
 
-  // e.g., "July 2023"
+  // 例如，"七月 2023"
   return format(date, 'MMMM yyyy');
 }

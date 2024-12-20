@@ -3,7 +3,7 @@ import type { Message } from 'ai';
 import { toast } from 'react-toastify';
 import { MAX_FILES, isBinaryFile, shouldIncludeFile } from '~/utils/fileUtils';
 import { createChatFromFolder } from '~/utils/folderImport';
-import { logStore } from '~/lib/stores/logs'; // Assuming logStore is imported from this location
+import { logStore } from '~/lib/stores/logs'; // 假设 logStore 从此位置导入
 
 interface ImportFolderButtonProps {
   className?: string;
@@ -17,30 +17,30 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
     const allFiles = Array.from(e.target.files || []);
 
     if (allFiles.length > MAX_FILES) {
-      const error = new Error(`Too many files: ${allFiles.length}`);
-      logStore.logError('File import failed - too many files', error, {
+      const error = new Error(`文件数量过多: ${allFiles.length}`);
+      logStore.logError('文件导入失败 - 文件数量过多', error, {
         fileCount: allFiles.length,
         maxFiles: MAX_FILES,
       });
       toast.error(
-        `This folder contains ${allFiles.length.toLocaleString()} files. This product is not yet optimized for very large projects. Please select a folder with fewer than ${MAX_FILES.toLocaleString()} files.`,
+        `该文件夹包含 ${allFiles.length.toLocaleString()} 个文件。该产品尚未针对非常大型项目进行优化。请选择一个包含少于 ${MAX_FILES.toLocaleString()} 个文件的文件夹。`,
       );
 
       return;
     }
 
-    const folderName = allFiles[0]?.webkitRelativePath.split('/')[0] || 'Unknown Folder';
+    const folderName = allFiles[0]?.webkitRelativePath.split('/')[0] || '未知文件夹';
     setIsLoading(true);
 
-    const loadingToast = toast.loading(`Importing ${folderName}...`);
+    const loadingToast = toast.loading(`正在导入 ${folderName}...`);
 
     try {
       const filteredFiles = allFiles.filter((file) => shouldIncludeFile(file.webkitRelativePath));
 
       if (filteredFiles.length === 0) {
-        const error = new Error('No valid files found');
-        logStore.logError('File import failed - no valid files', error, { folderName });
-        toast.error('No files found in the selected folder');
+        const error = new Error('未找到有效文件');
+        logStore.logError('文件导入失败 - 未找到有效文件', error, { folderName });
+        toast.error('在所选文件夹中未找到文件');
 
         return;
       }
@@ -58,19 +58,19 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
         .map((f) => f.file.webkitRelativePath.split('/').slice(1).join('/'));
 
       if (textFiles.length === 0) {
-        const error = new Error('No text files found');
-        logStore.logError('File import failed - no text files', error, { folderName });
-        toast.error('No text files found in the selected folder');
+        const error = new Error('未找到文本文件');
+        logStore.logError('文件导入失败 - 未找到文本文件', error, { folderName });
+        toast.error('在所选文件夹中未找到文本文件');
 
         return;
       }
 
       if (binaryFilePaths.length > 0) {
-        logStore.logWarning(`Skipping binary files during import`, {
+        logStore.logWarning(`导入过程中跳过二进制文件`, {
           folderName,
           binaryCount: binaryFilePaths.length,
         });
-        toast.info(`Skipping ${binaryFilePaths.length} binary files`);
+        toast.info(`跳过 ${binaryFilePaths.length} 个二进制文件`);
       }
 
       const messages = await createChatFromFolder(textFiles, binaryFilePaths, folderName);
@@ -79,20 +79,20 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
         await importChat(folderName, [...messages]);
       }
 
-      logStore.logSystem('Folder imported successfully', {
+      logStore.logSystem('文件夹导入成功', {
         folderName,
         textFileCount: textFiles.length,
         binaryFileCount: binaryFilePaths.length,
       });
-      toast.success('Folder imported successfully');
+      toast.success('文件夹导入成功');
     } catch (error) {
-      logStore.logError('Failed to import folder', error, { folderName });
-      console.error('Failed to import folder:', error);
-      toast.error('Failed to import folder');
+      logStore.logError('导入文件夹失败', error, { folderName });
+      console.error('导入文件夹失败:', error);
+      toast.error('导入文件夹失败');
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);
-      e.target.value = ''; // Reset file input
+      e.target.value = ''; // 重置文件输入
     }
   };
 
@@ -116,7 +116,7 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
         disabled={isLoading}
       >
         <div className="i-ph:upload-simple" />
-        {isLoading ? 'Importing...' : 'Import Folder'}
+        {isLoading ? '正在导入...' : '导入文件夹'}
       </button>
     </>
   );

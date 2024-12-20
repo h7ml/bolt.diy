@@ -31,19 +31,19 @@ export class FilesStore {
   #webcontainer: Promise<WebContainer>;
 
   /**
-   * Tracks the number of files without folders.
+   * 跟踪没有文件夹的文件数量。
    */
   #size = 0;
 
   /**
-   * @note Keeps track all modified files with their original content since the last user message.
-   * Needs to be reset when the user sends another message and all changes have to be submitted
-   * for the model to be aware of the changes.
+   * @note 跟踪自上次用户消息以来所有修改过的文件及其原始内容。
+   * 当用户发送另一条消息并且所有更改必须提交时需要重置该值，
+   * 以使模型能够意识到更改。
    */
   #modifiedFiles: Map<string, string> = import.meta.hot?.data.modifiedFiles ?? new Map();
 
   /**
-   * Map of files that matches the state of WebContainer.
+   * 与 WebContainer 状态匹配的文件映射。
    */
   files: MapStore<FileMap> = import.meta.hot?.data.files ?? map({});
 
@@ -87,13 +87,13 @@ export class FilesStore {
       const relativePath = nodePath.relative(webcontainer.workdir, filePath);
 
       if (!relativePath) {
-        throw new Error(`EINVAL: invalid file path, write '${relativePath}'`);
+        throw new Error(`EINVAL: 无效的文件路径，写入 '${relativePath}'`);
       }
 
       const oldContent = this.getFile(filePath)?.content;
 
       if (!oldContent) {
-        unreachable('Expected content to be defined');
+        unreachable('期望内容已定义');
       }
 
       await webcontainer.fs.writeFile(relativePath, content);
@@ -102,12 +102,12 @@ export class FilesStore {
         this.#modifiedFiles.set(filePath, oldContent);
       }
 
-      // we immediately update the file and don't rely on the `change` event coming from the watcher
+      // 我们立即更新文件，而不依赖于来自观察者的 `change` 事件
       this.files.setKey(filePath, { type: 'file', content, isBinary: false });
 
-      logger.info('File updated');
+      logger.info('文件已更新');
     } catch (error) {
-      logger.error('Failed to update file content\n\n', error);
+      logger.error('更新文件内容失败\n\n', error);
 
       throw error;
     }
@@ -126,12 +126,12 @@ export class FilesStore {
     const watchEvents = events.flat(2);
 
     for (const { type, path, buffer } of watchEvents) {
-      // remove any trailing slashes
+      // 删除任何尾随斜杠
       const sanitizedPath = path.replace(/\/+$/g, '');
 
       switch (type) {
         case 'add_dir': {
-          // we intentionally add a trailing slash so we can distinguish files from folders in the file tree
+          // 我们故意添加尾随斜杠，以便在文件树中区分文件和文件夹
           this.files.setKey(sanitizedPath, { type: 'folder' });
           break;
         }
@@ -155,10 +155,10 @@ export class FilesStore {
           let content = '';
 
           /**
-           * @note This check is purely for the editor. The way we detect this is not
-           * bullet-proof and it's a best guess so there might be false-positives.
-           * The reason we do this is because we don't want to display binary files
-           * in the editor nor allow to edit them.
+           * @note 此检查纯粹是为了编辑器。我们检测这一点的方式并不是
+           * 万无一失的，只是最佳猜测，因此可能会有误报。
+           * 我们这样做的原因是因为我们不想在编辑器中显示二进制文件
+           * 或允许编辑它们。
            */
           const isBinary = isBinaryFile(buffer);
 
@@ -176,7 +176,7 @@ export class FilesStore {
           break;
         }
         case 'update_directory': {
-          // we don't care about these events
+          // 我们不关心这些事件
           break;
         }
       }
@@ -206,10 +206,10 @@ function isBinaryFile(buffer: Uint8Array | undefined) {
 }
 
 /**
- * Converts a `Uint8Array` into a Node.js `Buffer` by copying the prototype.
- * The goal is to  avoid expensive copies. It does create a new typed array
- * but that's generally cheap as long as it uses the same underlying
- * array buffer.
+ * 将 `Uint8Array` 转换为 Node.js 的 `Buffer` 通过复制原型。
+ * 目标是避免昂贵的副本。它确实创建了一个新的类型数组
+ * 但这通常是便宜的，只要它使用相同的底层
+ * 数组缓冲区。
  */
 function convertToBuffer(view: Uint8Array): Buffer {
   return Buffer.from(view.buffer, view.byteOffset, view.byteLength);

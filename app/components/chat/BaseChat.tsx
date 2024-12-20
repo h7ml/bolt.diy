@@ -1,6 +1,6 @@
 /*
  * @ts-nocheck
- * Preventing TS checks with files presented in the video for a better presentation.
+ * 防止使用视频中展示的文件进行 TS 检查，以便更好地展示。
  */
 import type { Message } from 'ai';
 import React, { type RefCallback, useEffect, useState } from 'react';
@@ -100,7 +100,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         try {
           return JSON.parse(savedKeys);
         } catch (error) {
-          console.error('Failed to parse API keys from cookies:', error);
+          console.error('从 Cookies 解析 API 密钥失败：', error);
           return {};
         }
       }
@@ -118,7 +118,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     }, [transcript]);
 
     useEffect(() => {
-      // Load API keys from cookies on component mount
+      // 组件挂载时从 Cookies 加载 API 密钥
 
       let parsedApiKeys: Record<string, string> | undefined = {};
 
@@ -134,9 +134,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           }
         }
       } catch (error) {
-        console.error('Error loading API keys from cookies:', error);
+        console.error('从 Cookies 加载 API 密钥时出错：', error);
 
-        // Clear invalid cookie data
+        // 清除无效的 Cookie 数据
         Cookies.remove('apiKeys');
       }
 
@@ -153,9 +153,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           }
         }
       } catch (error) {
-        console.error('Error loading Provider Settings from cookies:', error);
+        console.error('从 Cookies 加载提供者设置时出错：', error);
 
-        // Clear invalid cookie data
+        // 清除无效的 Cookie 数据
         Cookies.remove('providers');
       }
 
@@ -186,7 +186,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         };
 
         recognition.onerror = (event) => {
-          console.error('Speech recognition error:', event.error);
+          console.error('语音识别错误：', event.error);
           setIsListening(false);
         };
 
@@ -213,11 +213,11 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         sendMessage(event, messageInput);
 
         if (recognition) {
-          recognition.abort(); // Stop current recognition
-          setTranscript(''); // Clear transcript
+          recognition.abort(); // 停止当前识别
+          setTranscript(''); // 清空抄本
           setIsListening(false);
 
-          // Clear the input by triggering handleInputChange with empty value
+          // 通过传递空值触发 handleInputChange 清空输入
           if (handleInputChange) {
             const syntheticEvent = {
               target: { value: '' },
@@ -292,10 +292,10 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             {!chatStarted && (
               <div id="intro" className="mt-[16vh] max-w-chat mx-auto text-center px-4 lg:px-0">
                 <h1 className="text-3xl lg:text-6xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
-                  Where ideas begin
+                  想法从这里开始
                 </h1>
                 <p className="text-md lg:text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-                  Bring ideas to life in seconds or get help on existing projects.
+                  在几秒钟内将想法变为现实，或者获得对现有项目的帮助。
                 </p>
               </div>
             )}
@@ -448,7 +448,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           return;
                         }
 
-                        // ignore if using input method engine
+                        // 如果正在使用输入法引擎则忽略
                         if (event.nativeEvent.isComposing) {
                           return;
                         }
@@ -465,7 +465,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                       minHeight: TEXTAREA_MIN_HEIGHT,
                       maxHeight: TEXTAREA_MAX_HEIGHT,
                     }}
-                    placeholder="How can Bolt help you today?"
+                    placeholder="Bolt 今天能帮你什么？"
                     translate="no"
                   />
                   <ClientOnly>
@@ -489,16 +489,16 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   </ClientOnly>
                   <div className="flex justify-between items-center text-sm p-4 pt-2">
                     <div className="flex gap-1 items-center">
-                      <IconButton title="Upload file" className="transition-all" onClick={() => handleFileUpload()}>
+                      <IconButton title="上传文件" className="transition-all" onClick={() => handleFileUpload()}>
                         <div className="i-ph:paperclip text-xl"></div>
                       </IconButton>
                       <IconButton
-                        title="Enhance prompt"
+                        title="增强提示"
                         disabled={input.length === 0 || enhancingPrompt}
                         className={classNames('transition-all', enhancingPrompt ? 'opacity-100' : '')}
                         onClick={() => {
                           enhancePrompt?.();
-                          toast.success('Prompt enhanced!');
+                          toast.success('提示增强！');
                         }}
                       >
                         {enhancingPrompt ? (
@@ -516,7 +516,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                       />
                       {chatStarted && <ClientOnly>{() => <ExportChatButton exportChat={exportChat} />}</ClientOnly>}
                       <IconButton
-                        title="Model Settings"
+                        title="模型设置"
                         className={classNames('transition-all flex items-center gap-1', {
                           'bg-bolt-elements-item-backgroundAccent text-bolt-elements-item-contentAccent':
                             isModelSettingsCollapsed,
@@ -532,9 +532,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     </div>
                     {input.length > 3 ? (
                       <div className="text-xs text-bolt-elements-textTertiary">
-                        Use <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Shift</kbd> +{' '}
-                        <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Return</kbd> a
-                        new line
+                        使用 <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Shift</kbd>{' '}
+                        + <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Return</kbd>{' '}
+                        新行
                       </div>
                     ) : null}
                   </div>

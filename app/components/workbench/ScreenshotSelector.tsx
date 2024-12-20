@@ -16,7 +16,7 @@ export const ScreenshotSelector = memo(
     const videoRef = useRef<HTMLVideoElement | null>(null);
 
     useEffect(() => {
-      // Cleanup function to stop all tracks when component unmounts
+      // 组件卸载时停止所有轨道的清理函数
       return () => {
         if (videoRef.current) {
           videoRef.current.pause();
@@ -45,7 +45,7 @@ export const ScreenshotSelector = memo(
             },
           } as MediaStreamConstraints);
 
-          // Add handler for when sharing stops
+          // 添加停止共享时的处理程序
           stream.addEventListener('inactive', () => {
             if (videoRef.current) {
               videoRef.current.pause();
@@ -67,7 +67,7 @@ export const ScreenshotSelector = memo(
 
           mediaStreamRef.current = stream;
 
-          // Initialize video element if needed
+          // 初始化视频元素（如果需要的话）
           if (!videoRef.current) {
             const video = document.createElement('video');
             video.style.opacity = '0';
@@ -78,13 +78,13 @@ export const ScreenshotSelector = memo(
             videoRef.current = video;
           }
 
-          // Set up video with the stream
+          // 设置视频与流
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         } catch (error) {
-          console.error('Failed to initialize stream:', error);
+          console.error('初始化流失败:', error);
           setIsSelectionMode(false);
-          toast.error('Failed to initialize screen capture');
+          toast.error('初始化屏幕捕获失败');
         }
       }
 
@@ -105,10 +105,10 @@ export const ScreenshotSelector = memo(
           return;
         }
 
-        // Wait for video to be ready
+        // 等待视频准备就绪
         await new Promise((resolve) => setTimeout(resolve, 300));
 
-        // Create temporary canvas for full screenshot
+        // 创建用于完整截图的临时画布
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = videoRef.current.videoWidth;
         tempCanvas.height = videoRef.current.videoHeight;
@@ -116,28 +116,28 @@ export const ScreenshotSelector = memo(
         const tempCtx = tempCanvas.getContext('2d');
 
         if (!tempCtx) {
-          throw new Error('Failed to get temporary canvas context');
+          throw new Error('获取临时画布上下文失败');
         }
 
-        // Draw the full video frame
+        // 绘制完整的视频帧
         tempCtx.drawImage(videoRef.current, 0, 0);
 
-        // Calculate scale factor between video and screen
+        // 计算视频与屏幕之间的缩放因子
         const scaleX = videoRef.current.videoWidth / window.innerWidth;
         const scaleY = videoRef.current.videoHeight / window.innerHeight;
 
-        // Get window scroll position
+        // 获取窗口的滚动位置
         const scrollX = window.scrollX;
         const scrollY = window.scrollY + 40;
 
-        // Get the container's position in the page
+        // 获取容器在页面中的位置
         const containerRect = containerRef.current.getBoundingClientRect();
 
-        // Offset adjustments for more accurate clipping
-        const leftOffset = -9; // Adjust left position
-        const bottomOffset = -14; // Adjust bottom position
+        // 偏移调整以获得更精确的剪裁
+        const leftOffset = -9; // 调整左侧位置
+        const bottomOffset = -14; // 调整底部位置
 
-        // Calculate the scaled coordinates with scroll offset and adjustments
+        // 计算带有滚动偏移和调整后的缩放坐标
         const scaledX = Math.round(
           (containerRect.left + Math.min(selectionStart.x, selectionEnd.x) + scrollX + leftOffset) * scaleX,
         );
@@ -147,7 +147,7 @@ export const ScreenshotSelector = memo(
         const scaledWidth = Math.round(Math.abs(selectionEnd.x - selectionStart.x) * scaleX);
         const scaledHeight = Math.round(Math.abs(selectionEnd.y - selectionStart.y) * scaleY);
 
-        // Create final canvas for the cropped area
+        // 创建用于裁剪区域的最终画布
         const canvas = document.createElement('canvas');
         canvas.width = Math.round(Math.abs(selectionEnd.x - selectionStart.x));
         canvas.height = Math.round(Math.abs(selectionEnd.y - selectionStart.y));
@@ -155,54 +155,54 @@ export const ScreenshotSelector = memo(
         const ctx = canvas.getContext('2d');
 
         if (!ctx) {
-          throw new Error('Failed to get canvas context');
+          throw new Error('获取画布上下文失败');
         }
 
-        // Draw the cropped area
+        // 绘制裁剪区域
         ctx.drawImage(tempCanvas, scaledX, scaledY, scaledWidth, scaledHeight, 0, 0, canvas.width, canvas.height);
 
-        // Convert to blob
+        // 转换为blob
         const blob = await new Promise<Blob>((resolve, reject) => {
           canvas.toBlob((blob) => {
             if (blob) {
               resolve(blob);
             } else {
-              reject(new Error('Failed to create blob'));
+              reject(new Error('创建blob失败'));
             }
           }, 'image/png');
         });
 
-        // Create a FileReader to convert blob to base64
+        // 创建一个FileReader将blob转换为base64
         const reader = new FileReader();
 
         reader.onload = (e) => {
           const base64Image = e.target?.result as string;
 
-          // Find the textarea element
+          // 查找textarea元素
           const textarea = document.querySelector('textarea');
 
           if (textarea) {
-            // Get the setters from the BaseChat component
+            // 从BaseChat组件中获取setter
             const setUploadedFiles = (window as any).__BOLT_SET_UPLOADED_FILES__;
             const setImageDataList = (window as any).__BOLT_SET_IMAGE_DATA_LIST__;
             const uploadedFiles = (window as any).__BOLT_UPLOADED_FILES__ || [];
             const imageDataList = (window as any).__BOLT_IMAGE_DATA_LIST__ || [];
 
             if (setUploadedFiles && setImageDataList) {
-              // Update the files and image data
+              // 更新文件和图像数据
               const file = new File([blob], 'screenshot.png', { type: 'image/png' });
               setUploadedFiles([...uploadedFiles, file]);
               setImageDataList([...imageDataList, base64Image]);
-              toast.success('Screenshot captured and added to chat');
+              toast.success('截图已捕获并添加到聊天中');
             } else {
-              toast.error('Could not add screenshot to chat');
+              toast.error('无法将截图添加到聊天中');
             }
           }
         };
         reader.readAsDataURL(blob);
       } catch (error) {
-        console.error('Failed to capture screenshot:', error);
-        toast.error('Failed to capture screenshot');
+        console.error('截图捕获失败:', error);
+        toast.error('截图捕获失败');
 
         if (mediaStreamRef.current) {
           mediaStreamRef.current.getTracks().forEach((track) => track.stop());
@@ -212,7 +212,7 @@ export const ScreenshotSelector = memo(
         setIsCapturing(false);
         setSelectionStart(null);
         setSelectionEnd(null);
-        setIsSelectionMode(false); // Turn off selection mode after capture
+        setIsSelectionMode(false); // 捕获后关闭选择模式
       }
     }, [isSelectionMode, selectionStart, selectionEnd, containerRef, setIsSelectionMode]);
 

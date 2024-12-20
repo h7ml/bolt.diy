@@ -6,7 +6,7 @@ import { atom } from 'nanostores';
 export async function newShellProcess(webcontainer: WebContainer, terminal: ITerminal) {
   const args: string[] = [];
 
-  // we spawn a JSH process with a fallback cols and rows in case the process is not attached yet to a visible terminal
+  // 我们生成一个 JSH 进程，并在进程尚未附加到可见终端时提供备用的列和行
   const process = await webcontainer.spawn('/bin/jsh', ['--osc', ...args], {
     terminal: {
       cols: terminal.cols ?? 80,
@@ -27,7 +27,7 @@ export async function newShellProcess(webcontainer: WebContainer, terminal: ITer
           const [, osc] = data.match(/\x1b\]654;([^\x07]+)\x07/) || [];
 
           if (osc === 'interactive') {
-            // wait until we see the interactive OSC
+            // 等待直到我们看到交互式 OSC
             isInteractive = true;
 
             jshReady.resolve();
@@ -101,7 +101,7 @@ export class BoltShell {
     const state = this.executionState.get();
 
     /*
-     * interrupt the current execution
+     * 中断当前执行
      *  this.#shellInputStream?.write('\x03');
      */
     this.terminal.input('\x03');
@@ -111,10 +111,10 @@ export class BoltShell {
       await state.executionPrms;
     }
 
-    //start a new execution
+    // 启动一个新执行
     this.terminal.input(command.trim() + '\n');
 
-    //wait for the execution to finish
+    // 等待执行完成
     const executionPromise = this.getCurrentExecutionResult();
     this.executionState.set({ sessionId, active: true, executionPrms: executionPromise });
 
@@ -127,7 +127,7 @@ export class BoltShell {
   async newBoltShellProcess(webcontainer: WebContainer, terminal: ITerminal) {
     const args: string[] = [];
 
-    // we spawn a JSH process with a fallback cols and rows in case the process is not attached yet to a visible terminal
+    // 我们生成一个 JSH 进程，并在进程尚未附加到可见终端时提供备用的列和行
     const process = await webcontainer.spawn('/bin/jsh', ['--osc', ...args], {
       terminal: {
         cols: terminal.cols ?? 80,
@@ -150,7 +150,7 @@ export class BoltShell {
             const [, osc] = data.match(/\x1b\]654;([^\x07]+)\x07/) || [];
 
             if (osc === 'interactive') {
-              // wait until we see the interactive OSC
+              // 等待直到我们看到交互式 OSC
               isInteractive = true;
 
               jshReady.resolve();
@@ -200,7 +200,7 @@ export class BoltShell {
       const text = value || '';
       fullOutput += text;
 
-      // Check if command completion signal with exit code
+      // 检查命令完成信号及退出代码
       const [, osc, , , code] = text.match(/\x1b\]654;([^\x07=]+)=?((-?\d+):(\d+))?\x07/) || [];
 
       if (osc === 'exit') {

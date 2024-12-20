@@ -25,7 +25,7 @@ type IconButtonWithChildrenProps = {
 
 type IconButtonProps = IconButtonWithoutChildrenProps | IconButtonWithChildrenProps;
 
-// Componente IconButton com suporte a refs
+// 支持 refs 的 IconButton 组件
 export const IconButton = memo(
   forwardRef(
     (

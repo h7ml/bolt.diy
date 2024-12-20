@@ -20,11 +20,11 @@ export const ModelSelector = ({
   modelList,
   providerList,
 }: ModelSelectorProps) => {
-  // Load enabled providers from cookies
+  // 从 cookies 加载启用的提供者
 
-  // Update enabled providers when cookies change
+  // 当 cookies 更改时更新启用的提供者
   useEffect(() => {
-    // If current provider is disabled, switch to first enabled provider
+    // 如果当前提供者被禁用，则切换到第一个启用的提供者
     if (providerList.length == 0) {
       return;
     }
@@ -33,7 +33,7 @@ export const ModelSelector = ({
       const firstEnabledProvider = providerList[0];
       setProvider?.(firstEnabledProvider);
 
-      // Also update the model to the first available one for the new provider
+      // 还要将模型更新为新提供者的第一个可用模型
       const firstModel = modelList.find((m) => m.provider === firstEnabledProvider.name);
 
       if (firstModel) {
@@ -45,10 +45,7 @@ export const ModelSelector = ({
   if (providerList.length === 0) {
     return (
       <div className="mb-2 p-4 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary">
-        <p className="text-center">
-          No providers are currently enabled. Please enable at least one provider in the settings to start using the
-          chat.
-        </p>
+        <p className="text-center">当前没有启用的提供者。请在设置中启用至少一个提供者以开始使用聊天。</p>
       </div>
     );
   }
