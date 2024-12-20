@@ -1,91 +1,91 @@
-# Frequently Asked Questions (FAQ)
+# 常见问题解答（FAQ）
 
 <details>
-<summary><strong>What are the best models for bolt.diy?</strong></summary>
+<summary><strong>bolt.diy的最佳模型是什么？</strong></summary>
 
-For the best experience with bolt.diy, we recommend using the following models:
+为了获得最佳的bolt.diy体验，我们推荐使用以下模型：
 
-- **Claude 3.5 Sonnet (old)**: Best overall coder, providing excellent results across all use cases
-- **Gemini 2.0 Flash**: Exceptional speed while maintaining good performance
-- **GPT-4o**: Strong alternative to Claude 3.5 Sonnet with comparable capabilities
-- **DeepSeekCoder V2 236b**: Best open source model (available through OpenRouter, DeepSeek API, or self-hosted)
-- **Qwen 2.5 Coder 32b**: Best model for self-hosting with reasonable hardware requirements
+- **Claude 3.5 Sonnet（旧版）**：整体最佳编码器，在所有用例中提供优异的结果
+- **Gemini 2.0 Flash**：在保持良好性能的同时具有卓越的速度
+- **GPT-4o**：与Claude 3.5 Sonnet相比的强大替代品，具备可比的能力
+- **DeepSeekCoder V2 236b**：最佳开源模型（可通过OpenRouter、DeepSeek API或自托管获取）
+- **Qwen 2.5 Coder 32b**：最佳自托管模型，具有合理的硬件要求
 
-**Note**: Models with less than 7b parameters typically lack the capability to properly interact with bolt!
+**注意**：参数少于7b的模型通常缺乏与bolt正确交互的能力！
 </details>
 
 <details>
-<summary><strong>How do I get the best results with bolt.diy?</strong></summary>
+<summary><strong>我该如何获得最佳的bolt.diy结果？</strong></summary>
 
-- **Be specific about your stack**:  
-  Mention the frameworks or libraries you want to use (e.g., Astro, Tailwind, ShadCN) in your initial prompt. This ensures that bolt.diy scaffolds the project according to your preferences.
+- **具体说明您的技术栈**：  
+  在您的初始提示中提及您想使用的框架或库（如Astro、Tailwind、ShadCN）。这确保了bolt.diy根据您的偏好搭建项目。
 
-- **Use the enhance prompt icon**:  
-  Before sending your prompt, click the *enhance* icon to let the AI refine your prompt. You can edit the suggested improvements before submitting.
+- **使用增强提示图标**：  
+  在发送提示之前，点击*增强*图标，让AI优化您的提示。您可以在提交之前编辑建议的改进内容。
 
-- **Scaffold the basics first, then add features**:  
-  Ensure the foundational structure of your application is in place before introducing advanced functionality. This helps bolt.diy establish a solid base to build on.
+- **先搭建基础，再添加功能**：  
+  确保您的应用程序的基础结构到位后，再引入高级功能。这有助于bolt.diy建立一个坚实的基础。
 
-- **Batch simple instructions**:  
-  Combine simple tasks into a single prompt to save time and reduce API credit consumption. For example:  
-  *"Change the color scheme, add mobile responsiveness, and restart the dev server."*
+- **批量处理简单指令**：  
+  将简单任务组合成一个提示，以节省时间并减少API信用消耗。例如：  
+  *“更改配色方案，添加移动响应功能，并重新启动开发服务器。”*
 </details>
 
 <details>
-<summary><strong>How do I contribute to bolt.diy?</strong></summary>
+<summary><strong>我该如何为bolt.diy贡献？</strong></summary>
 
-Check out our [Contribution Guide](CONTRIBUTING.md) for more details on how to get involved!
+查看我们的[贡献指南](CONTRIBUTING.md)，了解如何参与的更多细节！
 </details>
 
 <details>
-<summary><strong>What are the future plans for bolt.diy?</strong></summary>
+<summary><strong>bolt.diy的未来计划是什么？</strong></summary>
 
-Visit our [Roadmap](https://roadmap.sh/r/ottodev-roadmap-2ovzo) for the latest updates.  
-New features and improvements are on the way!
+访问我们的[路线图](https://roadmap.sh/r/ottodev-roadmap-2ovzo)，了解最新动态。  
+新的功能和改进正在进行中！
 </details>
 
 <details>
-<summary><strong>Why are there so many open issues/pull requests?</strong></summary>
+<summary><strong>为什么有这么多未解决的问题/拉取请求？</strong></summary>
 
-bolt.diy began as a small showcase project on @ColeMedin's YouTube channel to explore editing open-source projects with local LLMs. However, it quickly grew into a massive community effort!  
+bolt.diy最初是@ColeMedin的YouTube频道上的一个小型展示项目，旨在探索使用本地LLM编辑开源项目。然而，它迅速发展成为一个巨大的社区努力！  
 
-We're forming a team of maintainers to manage demand and streamline issue resolution. The maintainers are rockstars, and we're also exploring partnerships to help the project thrive.
+我们正在组建一个维护团队，以管理需求并简化问题解决。维护者都是明星，我们还在探索合作伙伴关系，以帮助项目蓬勃发展。
 </details>
 
 <details>
-<summary><strong>How do local LLMs compare to larger models like Claude 3.5 Sonnet for bolt.diy?</strong></summary>
+<summary><strong>本地LLM与像Claude 3.5 Sonnet这样的大型模型相比，bolt.diy的效果如何？</strong></summary>
 
-While local LLMs are improving rapidly, larger models like GPT-4o, Claude 3.5 Sonnet, and DeepSeek Coder V2 236b still offer the best results for complex applications. Our ongoing focus is to improve prompts, agents, and the platform to better support smaller local LLMs.
+尽管本地LLM正在快速提高，但像GPT-4o、Claude 3.5 Sonnet和DeepSeek Coder V2 236b等大型模型仍为复杂应用提供最佳结果。我们持续专注于改善提示、代理和平台，以更好地支持较小的本地LLM。
 </details>
 
 <details>
-<summary><strong>Common Errors and Troubleshooting</strong></summary>
+<summary><strong>常见错误及故障排除</strong></summary>
 
-### **"There was an error processing this request"**
-This generic error message means something went wrong. Check both:
-- The terminal (if you started the app with Docker or `pnpm`).
-- The developer console in your browser (press `F12` or right-click > *Inspect*, then go to the *Console* tab).
+### **“处理此请求时出错”**
+这个通用错误消息意味着出现了问题。请检查：
+- 终端（如果您使用Docker或`pnpm`启动了应用程序）。
+- 浏览器中的开发者控制台（按`F12`或右键点击 > *检查*，然后转到*控制台*选项卡）。
 
-### **"x-api-key header missing"**
-This error is sometimes resolved by restarting the Docker container.  
-If that doesn't work, try switching from Docker to `pnpm` or vice versa. We're actively investigating this issue.
+### **“x-api-key头缺失”**
+有时通过重新启动Docker容器可以解决此错误。  
+如果仍然无效，请尝试从Docker切换到`pnpm`或反之亦然。我们正在积极调查此问题。
 
-### **Blank preview when running the app**
-A blank preview often occurs due to hallucinated bad code or incorrect commands.  
-To troubleshoot:
-- Check the developer console for errors.
-- Remember, previews are core functionality, so the app isn't broken! We're working on making these errors more transparent.
+### **运行应用程序时预览为空**
+空白预览通常是由于幻觉化的坏代码或错误命令导致的。  
+要进行故障排除：
+- 检查开发者控制台是否有错误。
+- 请记住，预览是核心功能，因此应用程序没有损坏！我们正在努力使这些错误更加透明。
 
-### **"Everything works, but the results are bad"**
-Local LLMs like Qwen-2.5-Coder are powerful for small applications but still experimental for larger projects. For better results, consider using larger models like GPT-4o, Claude 3.5 Sonnet, or DeepSeek Coder V2 236b.
+### **“一切正常，但结果不好”**
+像Qwen-2.5-Coder这样的本地LLM在小型应用程序中很强大，但在大型项目中仍然是实验性的。为了获得更好的结果，请考虑使用更大型模型，如GPT-4o、Claude 3.5 Sonnet或DeepSeek Coder V2 236b。
 
-### **"Received structured exception #0xc0000005: access violation"**
-If you are getting this, you are probably on Windows. The fix is generally to update the [Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
+### **“收到结构化异常 #0xc0000005：访问冲突”**
+如果您收到此消息，您可能在Windows上。解决方案通常是更新[Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
 
-### **"Miniflare or Wrangler errors in Windows"**
-You will need to make sure you have the latest version of Visual Studio C++ installed (14.40.33816), more information here https://github.com/stackblitz-labs/bolt.diy/issues/19.
+### **“Windows中的Miniflare或Wrangler错误”**
+您需要确保安装了最新版本的Visual Studio C++（14.40.33816），更多信息请查看https://github.com/stackblitz-labs/bolt.diy/issues/19。
 </details>
 
 ---
 
-Got more questions? Feel free to reach out or open an issue in our GitHub repo!
+还有其他问题吗？可以随时联系或在我们的GitHub仓库中打开一个问题！

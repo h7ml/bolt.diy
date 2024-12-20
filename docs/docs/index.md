@@ -1,95 +1,95 @@
-# Welcome to bolt diy
-bolt.diy allows you to choose the LLM that you use for each prompt! Currently, you can use OpenAI, Anthropic, Ollama, OpenRouter, Gemini, LMStudio, Mistral, xAI, HuggingFace, DeepSeek, or Groq models - and it is easily extended to use any other model supported by the Vercel AI SDK! See the instructions below for running this locally and extending it to include more models.
+# 欢迎来到 bolt diy
+bolt.diy 允许您为每个提示选择使用的 LLM！目前，您可以使用 OpenAI、Anthropic、Ollama、OpenRouter、Gemini、LMStudio、Mistral、xAI、HuggingFace、DeepSeek 或 Groq 模型 - 并且可以轻松扩展以使用 Vercel AI SDK 支持的任何其他模型！请参阅下面的说明，以便在本地运行并扩展以包含更多模型。
 
-## Table of Contents
-- [Join the community!](#join-the-community)
-- [What's bolt.diy](#whats-boltdiy)
-- [What Makes bolt.diy Different](#what-makes-boltdiy-different)
-- [Setup](#setup)
-- [Run with Docker](#run-with-docker)
-  - [Using Helper Scripts](#1a-using-helper-scripts)
-  - [Direct Docker Build Commands](#1b-direct-docker-build-commands-alternative-to-using-npm-scripts)
-  - [Docker Compose with Profiles](#2-docker-compose-with-profiles-to-run-the-container)
-- [Run Without Docker](#run-without-docker)
-- [Adding New LLMs](#adding-new-llms)
-- [Available Scripts](#available-scripts)
-- [Development](#development)
-- [Tips and Tricks](#tips-and-tricks)
-
----
-
-## Join the community!
-
-[Join the community!](https://thinktank.ottomator.ai)
+## 目录
+- [加入社区！](#join-the-community)
+- [什么是 bolt.diy](#whats-boltdiy)
+- [什么使 bolt.diy 与众不同](#what-makes-boltdiy-different)
+- [设置](#setup)
+- [使用 Docker 运行](#run-with-docker)
+  - [使用辅助脚本](#1a-using-helper-scripts)
+  - [直接 Docker 构建命令](#1b-direct-docker-build-commands-alternative-to-using-npm-scripts)
+  - [使用配置文件的 Docker Compose 运行容器](#2-docker-compose-with-profiles-to-run-the-container)
+- [无 Docker 运行](#run-without-docker)
+- [添加新 LLM](#adding-new-llms)
+- [可用脚本](#available-scripts)
+- [开发](#development)
+- [提示和技巧](#tips-and-tricks)
 
 ---
 
-## Whats bolt.diy
+## 加入社区！
 
-bolt.diy is an AI-powered web development agent that allows you to prompt, run, edit, and deploy full-stack applications directly from your browser—no local setup required. If you're here to build your own AI-powered web dev agent using the Bolt open source codebase, [click here to get started!](./CONTRIBUTING.md)
-
----
-
-## What Makes bolt.diy Different
-
-Claude, v0, etc are incredible- but you can't install packages, run backends, or edit code. That’s where bolt.diy stands out:
-
-- **Full-Stack in the Browser**: bolt.diy integrates cutting-edge AI models with an in-browser development environment powered by **StackBlitz’s WebContainers**. This allows you to:
-  - Install and run npm tools and libraries (like Vite, Next.js, and more)
-  - Run Node.js servers
-  - Interact with third-party APIs
-  - Deploy to production from chat
-  - Share your work via a URL
-
-- **AI with Environment Control**: Unlike traditional dev environments where the AI can only assist in code generation, bolt.diy gives AI models **complete control** over the entire  environment including the filesystem, node server, package manager, terminal, and browser console. This empowers AI agents to handle the whole app lifecycle—from creation to deployment.
-
-Whether you’re an experienced developer, a PM, or a designer, bolt.diy allows you to easily build production-grade full-stack applications.
-
-For developers interested in building their own AI-powered development tools with WebContainers, check out the open-source Bolt codebase in this repo!
+[加入社区！](https://thinktank.ottomator.ai)
 
 ---
 
-## Setup
+## 什么是 bolt.diy
 
-Many of you are new users to installing software from Github. If you have any installation troubles reach out and submit an "issue" using the links above, or feel free to enhance this documentation by forking, editing the instructions, and doing a pull request.
+bolt.diy 是一个 AI 驱动的 Web 开发代理，允许您直接从浏览器提示、运行、编辑和部署全栈应用程序 - 无需本地设置。如果您希望使用 Bolt 开源代码库构建自己的 AI 驱动的 Web 开发代理，[点击此处开始！](./CONTRIBUTING.md)
 
-1. [Install Git from](https://git-scm.com/downloads)
+---
 
-2. [Install Node.js from](https://nodejs.org/en/download/)
+## 什么使 bolt.diy 与众不同
 
-Pay attention to the installer notes after completion. 
+Claude、v0 等都是令人惊叹的 - 但您无法安装包、运行后端或编辑代码。这就是 bolt.diy 脱颖而出的地方：
 
-On all operating systems, the path to Node.js should automatically be added to your system path. But you can check your path if you want to be sure. On Windows, you can search for "edit the system environment variables" in your system, select "Environment Variables..." once you are in the system properties, and then check for a path to Node in your "Path" system variable. On a Mac or Linux machine, it will tell you to check if /usr/local/bin is in your $PATH. To determine if usr/local/bin is included in $PATH open your Terminal and run:
+- **浏览器中的全栈**：bolt.diy 将尖端 AI 模型与由 **StackBlitz 的 WebContainers** 提供支持的浏览器内开发环境集成。这使您能够：
+  - 安装并运行 npm 工具和库（如 Vite、Next.js 等）
+  - 运行 Node.js 服务器
+  - 与第三方 API 交互
+  - 从聊天中部署到生产环境
+  - 通过 URL 分享您的工作
+
+- **具有环境控制的 AI**：与传统开发环境不同，AI 只能协助代码生成，bolt.diy 使 AI 模型对整个环境（包括文件系统、节点服务器、包管理器、终端和浏览器控制台）具有 **完全控制权**。这使 AI 代理能够处理整个应用生命周期 - 从创建到部署。
+
+无论您是经验丰富的开发人员、PM 还是设计师，bolt.diy 都允许您轻松构建生产级全栈应用程序。
+
+对于希望使用 WebContainers 构建自己的 AI 驱动开发工具的开发人员，请查看此代码库中的开源 Bolt 代码库！
+
+---
+
+## 设置
+
+许多人是从 GitHub 安装软件的新用户。如果您在安装过程中遇到任何问题，请使用上述链接提交“问题”或通过分叉、编辑说明并进行拉取请求来增强此文档。
+
+1. [从这里安装 Git](https://git-scm.com/downloads)
+
+2. [从这里安装 Node.js](https://nodejs.org/en/download/)
+
+安装完成后请注意安装程序的说明。
+
+在所有操作系统上，Node.js 的路径应自动添加到您的系统路径中。但如果您想确保，可以检查您的路径。在 Windows 上，您可以在系统中搜索“编辑系统环境变量”，在系统属性中选择“环境变量...”，然后检查“Path”系统变量中是否有指向 Node 的路径。在 Mac 或 Linux 机器上，它会告诉您检查 /usr/local/bin 是否在您的 $PATH 中。要确定 usr/local/bin 是否包含在 $PATH 中，请打开您的终端并运行：
 
 ```
-echo $PATH .
+echo $PATH .
 ```
 
-If you see usr/local/bin in the output then you're good to go.
+如果在输出中看到 usr/local/bin，那么您就可以继续了。
 
-3. Clone the repository (if you haven't already) by opening a Terminal window (or CMD with admin permissions) and then typing in this:
+3. 通过打开终端窗口（或带有管理员权限的 CMD）并输入以下指令来克隆仓库（如果您还没有）：
 
 ```
 git clone https://github.com/stackblitz-labs/bolt.diy.git
 ```
 
-3. Rename .env.example to .env.local and add your LLM API keys. You will find this file on a Mac at "[your name]/bolt.diy/.env.example". For Windows and Linux the path will be similar.
+4. 将 .env.example 重命名为 .env.local 并添加您的 LLM API 密钥。您会在 Mac 的 "[your name]/bolt.diy/.env.example" 找到此文件。对于 Windows 和 Linux，路径将类似。
 
 ![image](https://github.com/user-attachments/assets/7e6a532c-2268-401f-8310-e8d20c731328)
 
-If you can't see the file indicated above, its likely you can't view hidden files. On Mac, open a Terminal window and enter this command below. On Windows, you will see the hidden files option in File Explorer Settings. A quick Google search will help you if you are stuck here.
+如果您看不到上述指示的文件，可能是您无法查看隐藏文件。在 Mac 上，打开终端窗口并输入以下命令。在 Windows 上，您将在文件资源管理器设置中看到隐藏文件选项。如果您在这里遇到问题，可以通过快速 Google 搜索来找到帮助。
 
 ```
 defaults write com.apple.finder AppleShowAllFiles YES
 ```
 
-**NOTE**: you only have to set the ones you want to use and Ollama doesn't need an API key because it runs locally on your computer:
+**注意**：您只需设置要使用的密钥，Ollama 不需要 API 密钥，因为它在您的计算机上本地运行：
 
-[Get your GROQ API Key here](https://console.groq.com/keys)
+[在此处获取您的 GROQ API 密钥](https://console.groq.com/keys)
 
-[Get your Open AI API Key by following these instructions](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key)
+[按照这些说明获取您的 Open AI API 密钥](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key)
 
-Get your Anthropic API Key in your [account settings](https://console.anthropic.com/settings/keys)
+在您的 [帐户设置](https://console.anthropic.com/settings/keys) 中获取您的 Anthropic API 密钥
 
 ```
 GROQ_API_KEY=XXX
@@ -97,77 +97,75 @@ OPENAI_API_KEY=XXX
 ANTHROPIC_API_KEY=XXX
 ```
 
-Optionally, you can set the debug level:
+可选地，您可以设置调试级别：
 
 ```
 VITE_LOG_LEVEL=debug
 ```
 
-**Important**: Never commit your `.env.local` file to version control. It's already included in .gitignore.
+**重要**：绝不要将您的 `.env.local` 文件提交到版本控制中。它已经包含在 .gitignore 中。
 
-## Run with Docker
+## 使用 Docker 运行
 
-Prerequisites:
+先决条件：
 
-Git and Node.js as mentioned above, as well as Docker: https://www.docker.com/
+如上所述需要 Git 和 Node.js，以及 Docker: https://www.docker.com/
 
-### 1a. Using Helper Scripts
+### 1a. 使用辅助脚本
 
-NPM scripts are provided for convenient building:
+提供了 NPM 脚本以方便构建：
 
 ```bash
-# Development build
+# 开发构建
 npm run dockerbuild
 
-# Production build
+# 生产构建
 npm run dockerbuild:prod
 ```
 
-### 1b. Direct Docker Build Commands (alternative to using NPM scripts)
+### 1b. 直接 Docker 构建命令（替代使用 NPM 脚本）
 
-You can use Docker's target feature to specify the build environment instead of using NPM scripts if you wish:
+如果需要，您可以使用 Docker 的目标功能来指定构建环境，而不是使用 NPM 脚本：
 
 ```bash
-# Development build
+# 开发构建
 docker build . --target bolt-ai-development
 
-# Production build
+# 生产构建
 docker build . --target bolt-ai-production
 ```
 
-### 2. Docker Compose with Profiles to Run the Container
+### 2. 使用配置文件的 Docker Compose 运行容器
 
-Use Docker Compose profiles to manage different environments:
+使用 Docker Compose 配置文件来管理不同环境：
 
 ```bash
-# Development environment
+# 开发环境
 docker-compose --profile development up
 
-# Production environment
+# 生产环境
 docker-compose --profile production up
 ```
 
-When you run the Docker Compose command with the development profile, any changes you
-make on your machine to the code will automatically be reflected in the site running
-on the container (i.e. hot reloading still applies!).
+当您使用开发配置文件运行 Docker Compose 命令时，您在机器上对代码所做的任何更改将反映在运行在容器上的网站中（即热加载仍然适用！）。
 
 ---
 
-## Run Without Docker
+## 无 Docker 运行
 
-1. Install dependencies using Terminal (or CMD in Windows with admin permissions):
+1. 使用终端（或在 Windows 中具有管理员权限的 CMD）安装依赖项：
 
 ```
 pnpm install
 ```
 
-If you get an error saying "command not found: pnpm" or similar, then that means pnpm isn't installed. You can install it via this:
+如果您收到“找不到命令：pnpm”或类似的错误，这意味着 pnpm 尚未安装。您可以通过以下命令安装：
 
 ```
 sudo npm install -g pnpm
 ```
 
-2. Start the application with the command:
+2. 使用以下命令启动应用程序：
 
 ```bash
 pnpm run dev
@@ -175,49 +173,49 @@ pnpm run dev
 
 ---
 
-## Adding New LLMs:
+## 添加新 LLM：
 
-To make new LLMs available to use in this version of bolt.diy, head on over to `app/utils/constants.ts` and find the constant MODEL_LIST. Each element in this array is an object that has the model ID for the name (get this from the provider's API documentation), a label for the frontend model dropdown, and the provider. 
+要使新的 LLM 在此版本的 bolt.diy 中可用，请转到 `app/utils/constants.ts` 并找到常量 MODEL_LIST。此数组中的每个元素都是一个对象，包含模型 ID 作为名称（从提供程序的 API 文档获取），前端模型下拉列表的标签以及提供程序。
 
-By default, Anthropic, OpenAI, Groq, and Ollama are implemented as providers, but the YouTube video for this repo covers how to extend this to work with more providers if you wish!
+默认情况下，Anthropic、OpenAI、Groq 和 Ollama 被实现为提供程序，但此代码库的 YouTube 视频涵盖了如何扩展其以适用于更多提供程序的内容，您可以自行使用！
 
-When you add a new model to the MODEL_LIST array, it will immediately be available to use when you run the app locally or reload it. For Ollama models, make sure you have the model installed already before trying to use it here!
-
----
-
-## Available Scripts
-
-- `pnpm run dev`: Starts the development server.
-- `pnpm run build`: Builds the project.
-- `pnpm run start`: Runs the built application locally using Wrangler Pages. This script uses `bindings.sh` to set up necessary bindings so you don't have to duplicate environment variables.
-- `pnpm run preview`: Builds the project and then starts it locally, useful for testing the production build. Note, HTTP streaming currently doesn't work as expected with `wrangler pages dev`.
-- `pnpm test`: Runs the test suite using Vitest.
-- `pnpm run typecheck`: Runs TypeScript type checking.
-- `pnpm run typegen`: Generates TypeScript types using Wrangler.
-- `pnpm run deploy`: Builds the project and deploys it to Cloudflare Pages.
+当您将新的模型添加到 MODEL_LIST 数组中时，它会立即在您本地运行应用程序或重新加载时可用。对于 Ollama 模型，请确保您已安装该模型，然后再尝试在此处使用它！
 
 ---
 
-## Development
+## 可用脚本
 
-To start the development server:
+- `pnpm run dev`: 启动开发服务器。
+- `pnpm run build`: 构建项目。
+- `pnpm run start`: 使用 Wrangler Pages 本地运行构建的应用程序。此脚本使用 `bindings.sh` 设置必要的绑定，以便您无需重复环境变量。
+- `pnpm run preview`: 构建项目，然后启动本地，方便测试生产构建。请注意，HTTP 流式传输目前在 `wrangler pages dev` 上无法按预期工作。
+- `pnpm test`: 使用 Vitest 运行测试套件。
+- `pnpm run typecheck`: 运行 TypeScript 类型检查。
+- `pnpm run typegen`: 使用 Wrangler 生成 TypeScript 类型。
+- `pnpm run deploy`: 构建项目并将其部署到 Cloudflare Pages。
+
+---
+
+## 开发
+
+要启动开发服务器：
 
 ```bash
 pnpm run dev
 ```
 
-This will start the Remix Vite development server. You will need Google Chrome Canary to run this locally if you use Chrome! It's an easy install and a good browser for web development anyway.
+这将启动 Remix Vite 开发服务器。如果您使用 Chrome，则需要 Google Chrome Canary 在本地运行！这是一种简单的安装方式，并且是进行 Web 开发的好浏览器。
 
 ---
 
-## Tips and Tricks
+## 提示和技巧
 
-Here are some tips to get the most out of bolt.diy:
+以下是一些建议，以充分利用 bolt.diy：
 
-- **Be specific about your stack**: If you want to use specific frameworks or libraries (like Astro, Tailwind, ShadCN, or any other popular JavaScript framework), mention them in your initial prompt to ensure Bolt scaffolds the project accordingly.
+- **明确您的技术栈**：如果您想使用特定的框架或库（如 Astro、Tailwind、ShadCN 或任何其他流行的 JavaScript 框架），请在初始提示中提及它们，以确保 Bolt 根据要求构建项目。
 
-- **Use the enhance prompt icon**: Before sending your prompt, try clicking the 'enhance' icon to have the AI model help you refine your prompt, then edit the results before submitting.
+- **使用增强提示图标**：在发送提示之前，尝试点击‘增强’图标，让 AI 模型帮助您完善提示，然后在提交之前编辑结果。
 
-- **Scaffold the basics first, then add features**: Make sure the basic structure of your application is in place before diving into more advanced functionality. This helps Bolt understand the foundation of your project and ensure everything is wired up right before building out more advanced functionality.
+- **先构建基础结构，然后添加功能**：确保您的应用程序的基本结构到位，然后再深入更高级的功能。这有助于 Bolt 理解您项目的基础，并确保在构建更复杂的功能之前一切都有条不紊。
 
-- **Batch simple instructions**: Save time by combining simple instructions into one message. For example, you can ask Bolt to change the color scheme, add mobile responsiveness, and restart the dev server, all in one go saving you time and reducing API credit consumption significantly.
+- **批量处理简单指令**：通过将简单指令合并为一条消息来节省时间。例如，您可以要求 Bolt 更改配色方案、添加移动响应性并重新启动开发服务器，所有这些都可以一次性完成，从而节省大量时间并显著减少 API 使用量。
